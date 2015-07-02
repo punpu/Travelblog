@@ -1,7 +1,7 @@
 
 #project specific
 public/bower_components
-
+public/build
 
 # Logs
 logs

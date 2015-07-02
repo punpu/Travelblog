@@ -5,23 +5,36 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-
-
-
-    uglify: {
+    browserify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        transform: [ require('grunt-react').browserify ],
+        browserifyOptions: {
+         debug: true
+        }
       },
-      build: {
-        src: './server.js',
-        dest: 'build/<%= pkg.name %>.min.js'
+      client: {
+        src: ['react_components/**/*.jsx'],
+        dest: 'public/build/app.built.js'
       }
     },
 
     watch: {
-      files: ['**/*'],
-      tasks: ['jshint'],
+        react: {
+          files: 'react_components/**/*.jsx',
+          tasks: ['browserify']
+        }
     },
+
+    
+    //react: {
+    //  files: {
+    //    expand: true,
+    //    cwd: 'public/react_components',
+    //    src: ['**/*.jsx'],
+    //    dest: 'public/build',
+    //    ext: '.js'
+    //  }
+    //},
 
     jshint: {
       options: {
@@ -44,11 +57,12 @@ module.exports = function(grunt) {
   });
 
   // Load the plugins
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+	//grunt.loadNpmTasks('grunt-react');
+  grunt.loadNpmTasks('grunt-browserify');
 
   // Default task(s).
-  grunt.registerTask('default', ['uglify']);
+  grunt.registerTask('default', ['browserify']);
 
 };

@@ -8,9 +8,9 @@
 var config = {};
 config.port = 3000;
 config.dbhost = '127.0.0.1';
-config.dbuser = 'backbonetesti';
+config.dbuser = 'travelblog';
 config.dbpassword = 'testi';
-config.db = 'backbonetesti';
+config.db = 'travelblog';
 
 
 
