@@ -1,15 +1,7 @@
 // Contains the router
 
 var BlogPage = require('./BlogPage.jsx');
-
-var PageNotFound = React.createClass({
-  render: function() {
-    return (
-      <div>You see nothing but a note with the strange markings "404" scribbled on it.</div>
-    );
-  }
-
-});
+var BlogpostCreationPage = require('./BlogpostCreationPage.jsx');
 
 var Router = React.createClass({
 
@@ -19,6 +11,10 @@ var Router = React.createClass({
 
     page('/', function (ctx) {
       self.setState({ component: <BlogPage /> });
+    });
+
+    page('/createpost', function (ctx) {
+      self.setState({ component: <BlogpostCreationPage /> });
     });
 
     /* esimerkki url-parametristä
@@ -44,5 +40,14 @@ var Router = React.createClass({
   }
 
 });
+
+var PageNotFound = React.createClass({
+  render: function() {
+    return (
+      <div>You find a note with the strange markings "404" scribbled on it.</div>
+    );
+  }
+});
+
 
 React.render(<Router />, document.getElementById('app'));

@@ -4,37 +4,6 @@ var CommentBox = require('./CommentBox.jsx');
 
 var BlogpostBox = React.createClass({
 
-	loadBlogpostsFromServer: function () {
-		$.ajax({url: this.props.url, dataType: 'json', cache: false})
-  		.done(function (data) {
-  			this.setState({blogposts: data});
-  		}.bind(this))
-
-  		.fail(function (xhr, status, err) {
-  			console.error(this.props.url, status, err.toString());
-  		}.bind(this));
-	},
-
-	/*
-	postNewBlogpost: function (blogpost) {
-
-		$.ajax({
-			url: this.props.url, 
-			method: "POST", 
-			contentType: "application/json; charset=utf-8", 
-			data: JSON.stringify(blogpost)})
-
-		.done(function (data, status) {
-			this.loadBlogpostsFromServer();
-			console.log('postNewBlogpost status: '+status);
-		}.bind(this))
-
-		.fail(function (xhr, status, err) {
-			console.error(this.props.url, status, err.toString());
-		}.bind(this));
-
-	},
-	*/
 
   getInitialState: function() {
   	return {
@@ -45,6 +14,17 @@ var BlogpostBox = React.createClass({
   componentDidMount: function() {
   	this.loadBlogpostsFromServer();
   },
+
+  loadBlogpostsFromServer: function () {
+		$.ajax({url: '/api/blogpost', dataType: 'json', cache: false})
+  		.done(function (data) {
+  			this.setState({blogposts: data});
+  		}.bind(this))
+
+  		.fail(function (xhr, status, err) {
+  			console.error('/api/blogpost', status, err.toString());
+  		}.bind(this));
+	},
 
   render: function() {
     return (
@@ -63,7 +43,7 @@ var BlogpostList = React.createClass({
 		console.log(this.props.blogposts);
 		var blogpostNodes = this.props.blogposts.map( function (blogpost) {
 			return (
-					<Blogpost key={blogpost.id} author={blogpost.author} timestamp={blogpost.created_at}>
+					<Blogpost key={blogpost.id} blogpostID={blogpost.id} author={blogpost.author} timestamp={blogpost.created_at}>
 	          {blogpost.text}
 	        </Blogpost>
 				);
@@ -94,7 +74,7 @@ var Blogpost = React.createClass({
 				<span className="blogpostAuthor">
 					{this.props.author}
 				</span>
-				<CommentBox url="" />
+				<CommentBox blogpostID={this.props.blogpostID} />
 			</div>
 		);
 	}

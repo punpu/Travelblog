@@ -1,9 +1,9 @@
 // Blog page, shows the blog
 
 
-var BlogpostBox = require('./BlogpostBox.jsx');
 
-var BlogPage = React.createClass({
+
+var BlogpostCreationPage = React.createClass({
 
 	componentDidMount: function() {
 		
@@ -17,7 +17,11 @@ var BlogPage = React.createClass({
 
 	render: function() {
 		return (
-			<BlogpostBox />
+			<div>
+				<h2>Post:</h2>
+				<textarea></textarea>
+				<h2>Preview:</h2>
+			</div>
 		);
 	}
 
@@ -25,4 +29,4 @@ var BlogPage = React.createClass({
 });
 
 
-module.exports = BlogPage;
+module.exports = BlogpostCreationPage;
