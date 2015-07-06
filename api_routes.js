@@ -7,7 +7,7 @@ module.exports = function () {
 	// Creates new blogpost
 	app.post('/api/blogpost', function(req, res){
 		console.log(Date()+' - POST: /api/blogpost');
-		
+		console.log(req.body);
 		if(!req.body.author || !req.body.text){
 			console.log(Date()+' - ERROR: malformed request');
 			res.status(400).send();
