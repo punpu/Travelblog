@@ -20,21 +20,18 @@ module.exports = function(grunt) {
 
     watch: {
         react: {
-          files: 'react_components/**/*.jsx',
-          tasks: ['browserify']
+          files: ['react_components/**/*.jsx', 'styles/*.styl'],
+          tasks: ['stylus', 'browserify']
         }
     },
 
-    
-    //react: {
-    //  files: {
-    //    expand: true,
-    //    cwd: 'public/react_components',
-    //    src: ['**/*.jsx'],
-    //    dest: 'public/build',
-    //    ext: '.js'
-    //  }
-    //},
+    stylus: {
+      compile: {
+        files: {
+          'public/build/styles.built.css': ['styles/*.styl'] // compile and concat into single file
+        }
+      }
+    },
 
     jshint: {
       options: {
@@ -61,6 +58,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 	//grunt.loadNpmTasks('grunt-react');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-stylus');
 
   // Default task(s).
   grunt.registerTask('default', ['browserify']);
