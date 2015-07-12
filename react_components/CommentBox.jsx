@@ -49,7 +49,7 @@ var CommentBox = React.createClass({
   render: function() {
     return (
       <div className="commentBox">
-        <h1>Comments</h1>
+        <h3>Kommentit</h3>
         <CommentList data={this.state.data} />
         <CommentForm postNewComment={this.postNewComment}/>
       </div>
@@ -82,6 +82,12 @@ var CommentList = React.createClass({
 
 var CommentForm = React.createClass({
 
+	getInitialState: function() {
+		return {
+			showForm: false 
+		};
+	},
+
 	handleSubmit: function (el) {
 		el.preventDefault();
 		var author = React.findDOMNode(this.refs.author).value.trim();
@@ -97,14 +103,27 @@ var CommentForm = React.createClass({
     return;
 	},
 
+	openNewCommentForm: function () {
+		this.setState({showForm: true});
+	},
+
 
 	render: function() {
+
+		var style = {display: "none"};
+		if(this.state.showForm){
+			style = {display: "block"};
+		}
+
 		return (
-			<form className="commentForm" onSubmit={this.handleSubmit}>
-				<input type="text" placeholder="Author" ref="author"/>
-				<input type="text" placeholder="Comment" ref="comment" />
-				<input type="submit" value="Post" />
-			</form>
+			<div>
+				<a href="" onClick={this.openNewCommentForm}>Kirjoita uusi kommentti</a>
+				<form className="commentForm" onSubmit={this.handleSubmit} style={style}>
+					<input className="form-control" type="text" placeholder="Nimi" required ref="author"/>
+					<textarea className="form-control" placeholder="Kommentti" required ref="comment" ></textarea>
+					<input className="btn btn-default" type="submit" value="Lähetä" />
+				</form>
+			</div>
 		);
 	}
 
@@ -120,11 +139,17 @@ var Comment = React.createClass({
 			rawMarkup = marked(this.props.children.toString(), {sanitize: true});
 		}
 
+		var date = new Date(this.props.timestamp).toLocaleString();
+
 		return (
 			<div className="comment">
-				<h2 className="commentAuthor">
+				<span className="commentAuthor">
 					{this.props.author}
-				</h2>
+				</span>
+				<span className="pull-right commentTimestamp">
+					{date}
+				</span>
+				<div className="commentDivider"></div>
 				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
 			</div>
 		);

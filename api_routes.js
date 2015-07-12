@@ -80,7 +80,7 @@ module.exports = function () {
 				blogpostid: req.params.id }).into('comment')
 
 		.then(function (result) {
-			console.log(Date()+' - New blogpost created');
+			console.log(Date()+' - New Comment created');
 			res.status(201).send();		
 		})
 		.catch(function (error) {

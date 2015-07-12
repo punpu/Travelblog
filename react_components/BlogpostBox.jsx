@@ -4,7 +4,6 @@ var CommentBox = require('./CommentBox.jsx');
 
 var BlogpostBox = React.createClass({
 
-
   getInitialState: function() {
   	return {
   		blogposts: [] 
@@ -26,10 +25,13 @@ var BlogpostBox = React.createClass({
   		}.bind(this));
 	},
 
+	goToAdminPage: function () {
+		page('/createpost');
+	},
+
   render: function() {
     return (
       <div className="blogpostBox">
-        <h1>Blog</h1>
         <BlogpostList blogposts={this.state.blogposts} />
       </div>
     );
@@ -70,10 +72,14 @@ var Blogpost = React.createClass({
 
 		return (
 			<div className="blogpost">
+				<div className="blogpostHeader">
+					<span className="blogpostAuthor">
+						Kirjoittanut: {this.props.author}
+					</span>
+      		<a className="pull-right" href="" onClick={this.goToAdminPage}>Admin</a>
+				</div>
+				<div className="headerDivider" />
 				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
-				<span className="blogpostAuthor">
-					{this.props.author}
-				</span>
 				<CommentBox blogpostID={this.props.blogpostID} />
 			</div>
 		);

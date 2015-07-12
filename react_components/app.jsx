@@ -13,8 +13,8 @@ var Router = React.createClass({
       self.setState({ component: <BlogPage /> });
     });
 
-    page('/createpost', function (ctx) {
-      self.setState({ component: <BlogpostCreationPage /> });
+    page('/editblogpost/:id', function (ctx) {
+      self.setState({ component: <BlogpostCreationPage id={ctx.params.id} /> });
     });
 
     /* esimerkki url-parametristä

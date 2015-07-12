@@ -11,7 +11,7 @@ var BlogpostCreationPage = React.createClass({
 
 	getInitialState: function() {
 		return {
-		 
+			preview: "" 
 		};
 	},
 
@@ -42,20 +42,29 @@ var BlogpostCreationPage = React.createClass({
 
 	},
 
+	updatePreview: function () {
+		var blogpostText = React.findDOMNode(this.refs.blogpostText).value;
+		
+		this.setState( {preview: marked(blogpostText)} ); 
+	},
+
 	render: function() {
+		
 		return (
 			<div>
 				<h2>Post:</h2>
-				<input type="text" ref="author">mooi</input>
-				<textarea ref="blogpostText"></textarea>
+				<input className="form-control" placeholder="Kirjoittaja" type="text" ref="author" style={style.input}></input>
+				<textarea className="form-control" rows="20" placeholder="Teksti" ref="blogpostText" onKeyUp={this.updatePreview}></textarea>
 				<button onClick={this.postNewBlogpost}>Save</button>
 				<h2>Preview:</h2>
+				<div dangerouslySetInnerHTML={{__html: this.state.preview}} />
 			</div>
 		);
 	}
 
-
 });
+
+var style = {input: {"margin-bottom": "15px"}};
 
 
 module.exports = BlogpostCreationPage;
