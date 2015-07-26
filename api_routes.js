@@ -27,6 +27,7 @@ module.exports = function () {
 			console.log(error);
 			res.status(500).send();
 		}); 
+
 	});
 
 	// GET: api/blogpost
@@ -42,6 +43,22 @@ module.exports = function () {
 		});
 	});
 
+	// GET: api/blogpost/:id
+	// returns one blogpost
+	app.get('/api/blogpost/:id', function  (req, res) {
+		console.log(Date()+' - GET: /api/blogpost/'+req.params.id);
+
+		db.select().from('blogpost').where({id: req.params.id}).andWhereRaw('deleted IS NOT NULL').then(function(blogpost) {
+			if(blogpost){
+				res.status(200).send(blogpost[0]);	
+			}
+			else{
+				res.status(404).send();
+			}
+		}).catch(function (error) {
+			console.log(error);
+		});
+	});
 
 	// GET: api/blogpost/:id/comments
 	// returns all comments from a blogpost by its id

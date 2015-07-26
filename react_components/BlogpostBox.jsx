@@ -16,17 +16,13 @@ var BlogpostBox = React.createClass({
 
   loadBlogpostsFromServer: function () {
 		$.ajax({url: '/api/blogpost', dataType: 'json', cache: false})
-  		.done(function (data) {
-  			this.setState({blogposts: data});
-  		}.bind(this))
+		.done(function (data) {
+			this.setState({blogposts: data});
+		}.bind(this))
 
-  		.fail(function (xhr, status, err) {
-  			console.error('/api/blogpost', status, err.toString());
-  		}.bind(this));
-	},
-
-	goToAdminPage: function () {
-		page('/createpost');
+		.fail(function (xhr, status, err) {
+			console.error('/api/blogpost', status, err.toString());
+		}.bind(this));
 	},
 
   render: function() {
@@ -62,6 +58,11 @@ var BlogpostList = React.createClass({
 
 
 var Blogpost = React.createClass({
+
+
+	goToAdminPage: function () {
+		page('/editblogpost/'+this.props.blogpostID);
+	},
 
 	render: function() {
 		

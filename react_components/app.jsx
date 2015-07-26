@@ -17,6 +17,10 @@ var Router = React.createClass({
       self.setState({ component: <BlogpostCreationPage id={ctx.params.id} /> });
     });
 
+    page('/createpost', function (ctx) {
+      self.setState({ component: <BlogpostCreationPage /> });
+    });
+
     /* esimerkki url-parametristä
     page('/users/:id', function (ctx) {
       self.setState({ component: <Page2 params={ctx.params} /> });

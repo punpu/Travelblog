@@ -6,13 +6,29 @@
 var BlogpostCreationPage = React.createClass({
 
 	componentDidMount: function() {
-		
+		if(this.props.id){
+			this.fetchExistingBlogpost();
+		}
 	},
 
 	getInitialState: function() {
 		return {
-			preview: "" 
+			preview: "",
+			blogpost: {author: "", text: ""}
 		};
+	},
+
+	fetchExistingBlogpost: function () {
+		$.ajax({url: '/api/blogpost/'+this.props.id, dataType: 'json', cache: false})
+		.done(function (data) {
+			this.setState({blogpost: data});
+			this.setState({preview: marked(this.state.blogpost.text) });
+			console.log(this.state.blogpost.text);
+		}.bind(this))
+
+		.fail(function (xhr, status, err) {
+			console.error('/api/blogpost', status, err.toString());
+		}.bind(this));
 	},
 
 	postNewBlogpost: function () {
@@ -42,10 +58,14 @@ var BlogpostCreationPage = React.createClass({
 
 	},
 
-	updatePreview: function () {
+	// Update blogpost and preview states, so input values and preview change
+	updateForm: function () {
 		var blogpostText = React.findDOMNode(this.refs.blogpostText).value;
+		var blogpostAuthor = React.findDOMNode(this.refs.author).value;
 		
-		this.setState( {preview: marked(blogpostText)} ); 
+		this.setState( {blogpost: {author: blogpostAuthor, text: blogpostText}});
+		this.setState( {preview: marked(blogpostText)});
+
 	},
 
 	render: function() {
@@ -53,8 +73,8 @@ var BlogpostCreationPage = React.createClass({
 		return (
 			<div>
 				<h2>Post:</h2>
-				<input className="form-control" placeholder="Kirjoittaja" type="text" ref="author" style={style.input}></input>
-				<textarea className="form-control" rows="20" placeholder="Teksti" ref="blogpostText" onKeyUp={this.updatePreview}></textarea>
+				<input className="form-control" placeholder="Kirjoittaja" type="text" ref="author" style={style.input} onChange={this.updateForm} value={this.state.blogpost.author}></input>
+				<textarea className="form-control" rows="20" placeholder="Teksti" ref="blogpostText" onChange={this.updateForm} value={this.state.blogpost.text}></textarea>
 				<button onClick={this.postNewBlogpost}>Save</button>
 				<h2>Preview:</h2>
 				<div dangerouslySetInnerHTML={{__html: this.state.preview}} />
@@ -64,7 +84,7 @@ var BlogpostCreationPage = React.createClass({
 
 });
 
-var style = {input: {"margin-bottom": "15px"}};
+var style = {input: {"marginBottom": "15px"}};
 
 
 module.exports = BlogpostCreationPage;
