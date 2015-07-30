@@ -2,11 +2,13 @@ module.exports = function () {
 
 	var db = require('./db.js');
 	var app = require('./server.js');
+	var Busboy = require('busboy');
+	var inspect = require('util').inspect;
 
 	// POST: api/blogpost
 	// Creates new blogpost
-	app.post('/api/blogpost', function(req, res){
-		console.log(Date()+' - POST: /api/blogpost');
+	app.post('/api/blogposts', function(req, res){
+		console.log(Date()+' - POST: /api/blogposts');
 		console.log(req.body);
 		if(!req.body.author || !req.body.text){
 			console.log(Date()+' - ERROR: malformed request');
@@ -32,8 +34,8 @@ module.exports = function () {
 
 	// GET: api/blogpost
 	// returns all blogposts
-	app.get('/api/blogpost', function  (req, res) {
-		console.log(Date()+' - GET: /api/blogpost');
+	app.get('/api/blogposts', function  (req, res) {
+		console.log(Date()+' - GET: /api/blogposts');
 
 		db.select().table('blogpost').whereRaw('deleted IS NOT NULL').then(function(blogposts) {
 			res.status(200).send(blogposts);
@@ -45,8 +47,8 @@ module.exports = function () {
 
 	// GET: api/blogpost/:id
 	// returns one blogpost
-	app.get('/api/blogpost/:id', function  (req, res) {
-		console.log(Date()+' - GET: /api/blogpost/'+req.params.id);
+	app.get('/api/blogposts/:id', function  (req, res) {
+		console.log(Date()+' - GET: /api/blogposts/'+req.params.id);
 
 		db.select().from('blogpost').where({id: req.params.id}).andWhereRaw('deleted IS NOT NULL').then(function(blogpost) {
 			if(blogpost){
@@ -62,8 +64,8 @@ module.exports = function () {
 
 	// GET: api/blogpost/:id/comments
 	// returns all comments from a blogpost by its id
-	app.get('/api/blogpost/:id/comments', function (req, res) {
-		console.log(Date()+' - GET: /api/blogpost/'+req.params.id+'/comments');
+	app.get('/api/blogposts/:id/comments', function (req, res) {
+		console.log(Date()+' - GET: /api/blogposts/'+req.params.id+'/comments');
 
 		db.raw(
 			'select id, author, text, created_at '+
@@ -78,10 +80,10 @@ module.exports = function () {
 		});
 	});
 
-	// POST: /api/blogpost/:id/comments
+	// POST: /api/blogposts/:id/comments
 	// inserts new comment to blogpost by its id
-	app.post('/api/blogpost/:id/comments', function (req, res) {
-		console.log(Date()+' - POST: /api/blogpost/'+req.params.id+'/comments');
+	app.post('/api/blogposts/:id/comments', function (req, res) {
+		console.log(Date()+' - POST: /api/blogposts/'+req.params.id+'/comments');
 		
 		if( !req.body.author || !req.body.text ){
 			console.log(Date()+' - ERROR: malformed request');
@@ -107,5 +109,33 @@ module.exports = function () {
 	});
 
 	
+	app.post('/api/images', function (req, res) {
+		console.log(Date()+' - POST: /api/images/');
+		var busboy = new Busboy({ headers: req.headers });
+
+		busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+      console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
+      file.on('data', function(data) {
+        console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+      });
+      file.on('end', function() {
+        console.log('File [' + fieldname + '] Finished');
+      });
+    });
+
+    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
+      console.log('Field [' + fieldname + ']: value: ' + inspect(val));
+    });
+
+    busboy.on('finish', function() {
+      console.log('Done parsing form!');
+      res.writeHead(201, { Connection: 'close' });
+      res.end();
+    });
+
+
+    return req.pipe(busboy);
+	});
+
 
 };

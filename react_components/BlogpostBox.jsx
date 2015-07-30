@@ -15,13 +15,13 @@ var BlogpostBox = React.createClass({
   },
 
   loadBlogpostsFromServer: function () {
-		$.ajax({url: '/api/blogpost', dataType: 'json', cache: false})
+		$.ajax({url: '/api/blogposts', dataType: 'json', cache: false})
 		.done(function (data) {
 			this.setState({blogposts: data});
 		}.bind(this))
 
 		.fail(function (xhr, status, err) {
-			console.error('/api/blogpost', status, err.toString());
+			console.error('/api/blogposts', status, err.toString());
 		}.bind(this));
 	},
 

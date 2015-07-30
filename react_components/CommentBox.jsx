@@ -15,13 +15,13 @@ var CommentBox = React.createClass({
 
 
   loadCommentsFromServer: function () {
-		$.ajax({url: '/api/blogpost/'+this.props.blogpostID+'/comments', dataType: 'json', cache: false})
+		$.ajax({url: '/api/blogposts/'+this.props.blogpostID+'/comments', dataType: 'json', cache: false})
   		.done(function (data) {
   			this.setState({data: data});
   		}.bind(this))
 
   		.fail(function (xhr, status, err) {
-  			console.log('/api/blogpost/'+this.props.blogpostID+'/comments', status, err.toString());
+  			console.log('/api/blogposts/'+this.props.blogpostID+'/comments', status, err.toString());
   		}.bind(this));
 	},
 
@@ -29,7 +29,7 @@ var CommentBox = React.createClass({
 		console.log(comment);
 
 		$.ajax({
-			url: '/api/blogpost/'+this.props.blogpostID+'/comments', 
+			url: '/api/blogposts/'+this.props.blogpostID+'/comments', 
 			method: "POST", 
 			contentType: "application/json; charset=utf-8", 
 			data: JSON.stringify(comment)})
@@ -40,7 +40,7 @@ var CommentBox = React.createClass({
 		}.bind(this))
 
 		.fail(function (xhr, status, err) {
-			console.error('/api/blogpost/'+this.props.blogpostID+'/comments', status, err.toString());
+			console.error('/api/blogposts/'+this.props.blogpostID+'/comments', status, err.toString());
 		}.bind(this));
 
 	},

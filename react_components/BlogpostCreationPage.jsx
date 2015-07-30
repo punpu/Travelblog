@@ -19,7 +19,7 @@ var BlogpostCreationPage = React.createClass({
 	},
 
 	fetchExistingBlogpost: function () {
-		$.ajax({url: '/api/blogpost/'+this.props.id, dataType: 'json', cache: false})
+		$.ajax({url: '/api/blogposts/'+this.props.id, dataType: 'json', cache: false})
 		.done(function (data) {
 			this.setState({blogpost: data});
 			this.setState({preview: marked(this.state.blogpost.text) });
@@ -27,7 +27,7 @@ var BlogpostCreationPage = React.createClass({
 		}.bind(this))
 
 		.fail(function (xhr, status, err) {
-			console.error('/api/blogpost', status, err.toString());
+			console.error('/api/blogposts', status, err.toString());
 		}.bind(this));
 	},
 
@@ -42,7 +42,7 @@ var BlogpostCreationPage = React.createClass({
     var blogpost = {author: author, text: blogpostText};
 
     $.ajax({
-			url: '/api/blogpost/', 
+			url: '/api/blogposts/', 
 			method: "POST", 
 			contentType: "application/json; charset=utf-8", 
 			data: JSON.stringify(blogpost)})
@@ -78,6 +78,9 @@ var BlogpostCreationPage = React.createClass({
 				<button onClick={this.postNewBlogpost}>Save</button>
 				<h2>Preview:</h2>
 				<div dangerouslySetInnerHTML={{__html: this.state.preview}} />
+				Filez
+				<form action="..." method="post" enctype="multipart/form-data">
+  			<input type="file" name="image">
 			</div>
 		);
 	}
