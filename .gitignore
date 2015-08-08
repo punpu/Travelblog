@@ -2,6 +2,7 @@
 #project specific
 public/bower_components
 public/build
+public/images
 
 # Logs
 logs

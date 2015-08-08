@@ -2,8 +2,8 @@ module.exports = function () {
 
 	var db = require('./db.js');
 	var app = require('./server.js');
-	var Busboy = require('busboy');
 	var inspect = require('util').inspect;
+	var fs = require('fs');
 
 	// POST: api/blogpost
 	// Creates new blogpost
@@ -108,34 +108,37 @@ module.exports = function () {
 
 	});
 
-	
+	// Uploads images to server	
 	app.post('/api/images', function (req, res) {
 		console.log(Date()+' - POST: /api/images/');
-		var busboy = new Busboy({ headers: req.headers });
 
-		busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-      console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
-      file.on('data', function(data) {
-        console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
-      });
+		if(!req.busboy){
+			console.log('Busboy not found, bad request');
+			res.status(400).send();
+			return;
+		}
+
+		req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+      console.log('Uploading File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
+
+      if(mimetype === 'image/jpeg' || mimetype === 'image/png' || mimetype === 'image/gif' ){
+      	file.pipe(fs.createWriteStream(__dirname + '/public/images/' + filename));	
+      }
+      else{
+      	console.log(Date()+'Wrong mimetype! File rejected.');
+      }
+      
       file.on('end', function() {
         console.log('File [' + fieldname + '] Finished');
       });
     });
 
-    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
-      console.log('Field [' + fieldname + ']: value: ' + inspect(val));
-    });
-
-    busboy.on('finish', function() {
+    req.busboy.on('finish', function() {
       console.log('Done parsing form!');
       res.writeHead(201, { Connection: 'close' });
       res.end();
     });
 
-
-    return req.pipe(busboy);
+    req.pipe(req.busboy);
 	});
-
-
 };

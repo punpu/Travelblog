@@ -14,11 +14,17 @@ var db = require('./db');
 var path = require('path');
 
 var bodyParser = require('body-parser');
+var busboy = require('connect-busboy');
+
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
 app.use(express.static(__dirname + '/public'));
-
+app.use(busboy({
+	limits: {
+		fileSize: 5 * 1024 * 1024 //10MB
+	}
+}));
 
 // Initialize routes
 require('./api_routes.js')();

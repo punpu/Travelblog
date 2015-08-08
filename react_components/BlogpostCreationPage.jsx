@@ -73,14 +73,19 @@ var BlogpostCreationPage = React.createClass({
 		return (
 			<div>
 				<h2>Post:</h2>
-				<input className="form-control" placeholder="Kirjoittaja" type="text" ref="author" style={style.input} onChange={this.updateForm} value={this.state.blogpost.author}></input>
-				<textarea className="form-control" rows="20" placeholder="Teksti" ref="blogpostText" onChange={this.updateForm} value={this.state.blogpost.text}></textarea>
+				<input className="form-control" placeholder="Kirjoittaja" type="text" ref="author" 
+							 style={style.input} onChange={this.updateForm} value={this.state.blogpost.author}>
+				</input>
+				<textarea className="form-control" rows="20" placeholder="Teksti" ref="blogpostText"
+								  onChange={this.updateForm} value={this.state.blogpost.text}></textarea>
 				<button onClick={this.postNewBlogpost}>Save</button>
 				<h2>Preview:</h2>
 				<div dangerouslySetInnerHTML={{__html: this.state.preview}} />
 				Filez
-				<form action="..." method="post" enctype="multipart/form-data">
-  			<input type="file" name="image">
+				<form action="/api/images" method="POST" encType="multipart/form-data">
+  				<input type="file" name="image" />
+  				<input type="submit">Tallenna</input>
+  			</form>
 			</div>
 		);
 	}
