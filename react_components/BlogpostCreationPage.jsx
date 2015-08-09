@@ -83,6 +83,24 @@ var BlogpostCreationPage = React.createClass({
 
 	},
 
+	deleteBlogpost: function () {
+
+    $.ajax({
+			url: '/api/blogposts/'+this.props.blogpostid, 
+			method: 'DELETE'})
+
+		.done(function (data, status) {
+			console.log('Blogpost deleted');
+			page('/');
+
+		}.bind(this))
+
+		.fail(function (xhr, status, err) {
+			console.error('postNewBlogpost: ', status, err.toString());
+		}.bind(this));
+
+	},
+
 	// Either edit or post a new blogpost depending on whether the id exists
 	saveBlogpost: function () {
 		if(this.props.blogpostid){
@@ -107,20 +125,30 @@ var BlogpostCreationPage = React.createClass({
 		
 		return (
 			<div>
-				<h2>Post:</h2>
-				<input className="form-control" placeholder="Kirjoittaja" type="text" ref="author" 
-							 style={style.input} onChange={this.updateForm} value={this.state.blogpost.author}>
-				</input>
-				<textarea className="form-control" rows="20" placeholder="Teksti" ref="blogpostText"
-								  onChange={this.updateForm} value={this.state.blogpost.text}></textarea>
-				<button onClick={this.saveBlogpost}>Save</button>
-				<h2>Preview:</h2>
-				<div dangerouslySetInnerHTML={{__html: this.state.preview}} />
+				<div className="row">
+					<div className="col-md-6 newPostForm">
+						<h2>Post:</h2>
+						<input className="form-control" placeholder="Kirjoittaja" type="text" ref="author" 
+									 style={style.input} onChange={this.updateForm} value={this.state.blogpost.author}>
+						</input>
+						<textarea className="form-control" rows="20" placeholder="Teksti" ref="blogpostText"
+										  onChange={this.updateForm} value={this.state.blogpost.text}></textarea>
+
+						<button className="btn btn-primary" onClick={this.saveBlogpost}>Save</button>
+						<button className="btn btn-default pull-right" onClick={this.deleteBlogpost}>Delete post</button>
+					</div>
+					<div className="col-md-6 postPreview">
+						<h2>Preview:</h2>
+						<div dangerouslySetInnerHTML={{__html: this.state.preview}} />
+					</div>
+				</div>
+				
 				Filez
 				<form action="/api/images" method="POST" encType="multipart/form-data">
   				<input type="file" name="image" />
-  				<input type="submit">Tallenna</input>
+  				<input className="btn btn-primary" type="submit">Tallenna</input>
   			</form>
+
 			</div>
 		);
 	}

@@ -35,7 +35,7 @@ module.exports = function () {
 	app.get('/api/blogposts', function  (req, res) {
 		console.log(Date()+' - GET: /api/blogposts');
 
-		db.select().table('blogpost').whereRaw('deleted IS NOT NULL').then(function(blogposts) {
+		db.select().table('blogpost').whereRaw('deleted IS FALSE').then(function(blogposts) {
 			res.status(200).send(blogposts);
 
 		}).catch(function (error) {
@@ -48,7 +48,7 @@ module.exports = function () {
 	app.get('/api/blogposts/:id', function  (req, res) {
 		console.log(Date()+' - GET: /api/blogposts/'+req.params.id);
 
-		db.select().from('blogpost').where({id: req.params.id}).andWhereRaw('deleted IS NOT NULL').then(function(blogpost) {
+		db.select().from('blogpost').where({id: req.params.id}).andWhereRaw('deleted IS FALSE').then(function(blogpost) {
 			if(blogpost){
 				res.status(200).send(blogpost[0]);	
 			}
@@ -70,7 +70,6 @@ module.exports = function () {
 			res.status(400).send();
 			return;
 		}
-		var date = new Date();
 
 		db.raw(
 			'UPDATE blogpost '+
@@ -87,15 +86,33 @@ module.exports = function () {
 
 	});
 
+	// Deletes blogpost
+	app.delete('/api/blogposts/:id', function(req, res){
+		console.log(Date()+' - DELETE: /api/blogposts/'+req.params.id);
 
-	// Returns all comments from a blogpost by its id
+		db.raw(
+			'UPDATE blogpost '+
+			'SET deleted = TRUE '+
+			'WHERE id = ?', [req.params.id])
+		.then(function(result){
+				console.log(Date()+' - Blogpost deleted');
+				res.status(200).send();
+		})
+		.catch(function(error) {
+			console.log(error);
+			res.status(500).send();
+		}); 
+
+	});
+
+	// Returns all comments from a blogpost
 	app.get('/api/blogposts/:id/comments', function (req, res) {
 		console.log(Date()+' - GET: /api/blogposts/'+req.params.id+'/comments');
 
 		db.raw(
 			'select id, author, text, created_at '+
 			'from comment '+
-			'where blogpostid = ?', [req.params.id])
+			'where blogpostid = ? AND deleted IS FALSE', [req.params.id])
 
 		.then(function (result) {
 			res.status(200).send(result.rows);
