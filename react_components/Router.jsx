@@ -6,15 +6,20 @@ var BlogpostCreationPage = require('./BlogpostCreationPage.jsx');
 var Router = React.createClass({
 
   componentDidMount: function () {
+    console.log('Router mount');
+
 
     var self = this;
+
+    //page.base('/');
 
     page('/', function (ctx) {
       self.setState({ component: <BlogPage /> });
     });
 
     page('/editblogpost/:id', function (ctx) {
-      self.setState({ component: <BlogpostCreationPage id={ctx.params.id} /> });
+      console.log('editblog page');
+      self.setState({ component: <BlogpostCreationPage blogpostid={ctx.params.id} /> });
     });
 
     page('/createpost', function (ctx) {
@@ -31,6 +36,7 @@ var Router = React.createClass({
       self.setState({ component: <PageNotFound /> });
     });
 
+
     page.start();
 
   },
@@ -40,6 +46,8 @@ var Router = React.createClass({
   },
 
   render: function () {
+    console.log('Router render');
+
     return this.state.component;
   }
 

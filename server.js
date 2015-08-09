@@ -33,6 +33,7 @@ require('./api_routes.js')();
 // GET: index.html
 app.get('*', function(req, res) {
 	console.log("GET: index.html");
+	console.log(req.url);
 	res.sendFile('public/index.html', { root: path.join(__dirname) });
 });
 

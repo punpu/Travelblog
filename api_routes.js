@@ -5,11 +5,10 @@ module.exports = function () {
 	var inspect = require('util').inspect;
 	var fs = require('fs');
 
-	// POST: api/blogpost
 	// Creates new blogpost
 	app.post('/api/blogposts', function(req, res){
 		console.log(Date()+' - POST: /api/blogposts');
-		console.log(req.body);
+
 		if(!req.body.author || !req.body.text){
 			console.log(Date()+' - ERROR: malformed request');
 			res.status(400).send();
@@ -32,7 +31,6 @@ module.exports = function () {
 
 	});
 
-	// GET: api/blogpost
 	// returns all blogposts
 	app.get('/api/blogposts', function  (req, res) {
 		console.log(Date()+' - GET: /api/blogposts');
@@ -45,7 +43,7 @@ module.exports = function () {
 		});
 	});
 
-	// GET: api/blogpost/:id
+
 	// returns one blogpost
 	app.get('/api/blogposts/:id', function  (req, res) {
 		console.log(Date()+' - GET: /api/blogposts/'+req.params.id);
@@ -62,8 +60,35 @@ module.exports = function () {
 		});
 	});
 
-	// GET: api/blogpost/:id/comments
-	// returns all comments from a blogpost by its id
+
+	// Modifies existing blogpost
+	app.put('/api/blogposts/:id', function(req, res){
+		console.log(Date()+' - PUT: /api/blogposts/'+req.params.id);
+
+		if(!req.body.author || !req.body.text){
+			console.log(Date()+' - ERROR: malformed request');
+			res.status(400).send();
+			return;
+		}
+		var date = new Date();
+
+		db.raw(
+			'UPDATE blogpost '+
+			'SET author = ?, text = ?, updated_at = current_timestamp '+
+			'WHERE id = ?', [req.body.author, req.body.text, req.params.id])
+		.then(function(result){
+				console.log(Date()+' - Blogpost edited');
+				res.status(200).send();
+		})
+		.catch(function(error) {
+			console.log(error);
+			res.status(500).send();
+		}); 
+
+	});
+
+
+	// Returns all comments from a blogpost by its id
 	app.get('/api/blogposts/:id/comments', function (req, res) {
 		console.log(Date()+' - GET: /api/blogposts/'+req.params.id+'/comments');
 
@@ -80,7 +105,7 @@ module.exports = function () {
 		});
 	});
 
-	// POST: /api/blogposts/:id/comments
+	
 	// inserts new comment to blogpost by its id
 	app.post('/api/blogposts/:id/comments', function (req, res) {
 		console.log(Date()+' - POST: /api/blogposts/'+req.params.id+'/comments');
