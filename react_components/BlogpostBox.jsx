@@ -68,7 +68,7 @@ var Blogpost = React.createClass({
 		
 		var rawMarkup = '';
 		if(this.props.children){
-			rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+			rawMarkup = marked(this.props.children.toString());
 		}
 
 		return (

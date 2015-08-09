@@ -109,6 +109,7 @@ var BlogpostCreationPage = React.createClass({
 		else{
 			this.postNewBlogpost();
 		}
+		page('/');
 	},
 
 	// Update blogpost and preview states, so input values and preview change

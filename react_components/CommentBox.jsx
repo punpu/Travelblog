@@ -65,9 +65,7 @@ var CommentList = React.createClass({
 		console.log(this.props.data);
 		var commentNodes = this.props.data.map( function (comment) {
 			return (
-					<Comment key={comment.id} author={comment.author} timestamp={comment.created_at}>
-	          {comment.text}
-	        </Comment>
+					<Comment key={comment.id} author={comment.author} text={comment.text} timestamp={comment.created_at} />
 				);
 		});
 
@@ -110,15 +108,15 @@ var CommentForm = React.createClass({
 
 	render: function() {
 
-		var style = {display: "none"};
+		var displayForm = {display: "none"};
 		if(this.state.showForm){
-			style = {display: "block"};
+			displayForm = {display: "block"};
 		}
 
 		return (
 			<div>
 				<a href="" onClick={this.openNewCommentForm}>Kirjoita uusi kommentti</a>
-				<form className="commentForm" onSubmit={this.handleSubmit} style={style}>
+				<form className="commentForm" onSubmit={this.handleSubmit} style={displayForm}>
 					<input className="form-control" type="text" placeholder="Nimi" required ref="author"/>
 					<textarea className="form-control" placeholder="Kommentti" required ref="comment" ></textarea>
 					<input className="btn btn-default" type="submit" value="Lähetä" />
@@ -134,10 +132,10 @@ var Comment = React.createClass({
 
 	render: function() {
 		
-		var rawMarkup = '';
-		if(this.props.children){
-			rawMarkup = marked(this.props.children.toString(), {sanitize: true});
-		}
+		// var rawMarkup = '';
+		// if(this.props.children){
+		// 	rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+		// }
 
 		var date = new Date(this.props.timestamp).toLocaleString();
 
@@ -150,7 +148,7 @@ var Comment = React.createClass({
 					{date}
 				</span>
 				<div className="commentDivider"></div>
-				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+				<span className="commentText">{this.props.text}</span>
 			</div>
 		);
 	}

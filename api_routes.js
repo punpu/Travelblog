@@ -35,7 +35,12 @@ module.exports = function () {
 	app.get('/api/blogposts', function  (req, res) {
 		console.log(Date()+' - GET: /api/blogposts');
 
-		db.select().table('blogpost').whereRaw('deleted IS FALSE').then(function(blogposts) {
+		db
+		.select().table('blogpost')
+		.whereRaw('deleted IS FALSE')
+		.orderBy('created_at', 'desc')
+
+		.then(function(blogposts) {
 			res.status(200).send(blogposts);
 
 		}).catch(function (error) {
