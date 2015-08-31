@@ -1,12 +1,12 @@
 module.exports = function () {
 
 	var db = require('./db.js');
-	var app = require('./server.js');
+	var appRouter = require('./server.js');
 	var inspect = require('util').inspect;
 	var fs = require('fs');
 
 	// Creates new blogpost
-	app.post('/api/blogposts', function(req, res){
+	appRouter.post('/api/blogposts', function(req, res){
 		console.log(Date()+' - POST: /api/blogposts');
 
 		if(!req.body.author || !req.body.text){
@@ -32,7 +32,7 @@ module.exports = function () {
 	});
 
 	// returns all blogposts
-	app.get('/api/blogposts', function  (req, res) {
+	appRouter.get('/api/blogposts', function  (req, res) {
 		console.log(Date()+' - GET: /api/blogposts');
 
 		db
@@ -50,7 +50,7 @@ module.exports = function () {
 
 
 	// returns one blogpost
-	app.get('/api/blogposts/:id', function  (req, res) {
+	appRouter.get('/api/blogposts/:id', function  (req, res) {
 		console.log(Date()+' - GET: /api/blogposts/'+req.params.id);
 
 		db.select().from('blogpost').where({id: req.params.id}).andWhereRaw('deleted IS FALSE').then(function(blogpost) {
@@ -67,7 +67,7 @@ module.exports = function () {
 
 
 	// Modifies existing blogpost
-	app.put('/api/blogposts/:id', function(req, res){
+	appRouter.put('/api/blogposts/:id', function(req, res){
 		console.log(Date()+' - PUT: /api/blogposts/'+req.params.id);
 
 		if(!req.body.author || !req.body.text){
@@ -92,7 +92,7 @@ module.exports = function () {
 	});
 
 	// Deletes blogpost
-	app.delete('/api/blogposts/:id', function(req, res){
+	appRouter.delete('/api/blogposts/:id', function(req, res){
 		console.log(Date()+' - DELETE: /api/blogposts/'+req.params.id);
 
 		db.raw(
@@ -111,7 +111,7 @@ module.exports = function () {
 	});
 
 	// Returns all comments from a blogpost
-	app.get('/api/blogposts/:id/comments', function (req, res) {
+	appRouter.get('/api/blogposts/:id/comments', function (req, res) {
 		console.log(Date()+' - GET: /api/blogposts/'+req.params.id+'/comments');
 
 		db.raw(
@@ -129,7 +129,7 @@ module.exports = function () {
 
 	
 	// inserts new comment to blogpost by its id
-	app.post('/api/blogposts/:id/comments', function (req, res) {
+	appRouter.post('/api/blogposts/:id/comments', function (req, res) {
 		console.log(Date()+' - POST: /api/blogposts/'+req.params.id+'/comments');
 		
 		if( !req.body.author || !req.body.text ){
@@ -156,7 +156,7 @@ module.exports = function () {
 	});
 
 	// Uploads images to server	
-	app.post('/api/images', function (req, res) {
+	appRouter.post('/api/images', function (req, res) {
 		console.log(Date()+' - POST: /api/images/');
 
 		if(!req.busboy){

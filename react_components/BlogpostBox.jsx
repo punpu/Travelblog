@@ -15,19 +15,20 @@ var BlogpostBox = React.createClass({
   },
 
   loadBlogpostsFromServer: function () {
-		$.ajax({url: '/api/blogposts', dataType: 'json', cache: false})
+		$.ajax({url: page.base()+'/api/blogposts', dataType: 'json', cache: false})
 		.done(function (data) {
 			this.setState({blogposts: data});
 		}.bind(this))
 
 		.fail(function (xhr, status, err) {
-			console.error('/api/blogposts', status, err.toString());
+			console.log('/api/blogposts', status, err.toString());
 		}.bind(this));
 	},
 
   render: function() {
     return (
       <div className="blogpostBox">
+      	Blogit
         <BlogpostList blogposts={this.state.blogposts} />
       </div>
     );

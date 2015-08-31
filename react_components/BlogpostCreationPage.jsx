@@ -19,14 +19,14 @@ var BlogpostCreationPage = React.createClass({
 	},
 
 	fetchExistingBlogpost: function () {
-		$.ajax({url: '/api/blogposts/'+this.props.blogpostid, dataType: 'json', cache: false})
+		$.ajax({url: page.base()+'/api/blogposts/'+this.props.blogpostid, dataType: 'json', cache: false})
 		.done(function (data) {
 			this.setState({blogpost: data});
 			this.setState({preview: marked(this.state.blogpost.text) });
 		}.bind(this))
 
 		.fail(function (xhr, status, err) {
-			console.error('/api/blogposts', status, err.toString());
+			console.log('/api/blogposts', status, err.toString());
 		}.bind(this));
 	},
 
@@ -41,7 +41,7 @@ var BlogpostCreationPage = React.createClass({
     var blogpost = {author: author, text: blogpostText};
 
     $.ajax({
-			url: '/api/blogposts/', 
+			url: page.base()+'/api/blogposts/', 
 			method: "POST", 
 			contentType: "application/json; charset=utf-8", 
 			data: JSON.stringify(blogpost)})
@@ -52,7 +52,7 @@ var BlogpostCreationPage = React.createClass({
 		}.bind(this))
 
 		.fail(function (xhr, status, err) {
-			console.error('postNewBlogpost: ', status, err.toString());
+			console.log('postNewBlogpost: ', status, err.toString());
 		}.bind(this));
 
 	},
@@ -68,7 +68,7 @@ var BlogpostCreationPage = React.createClass({
     var blogpost = {author: author, text: blogpostText};
 
     $.ajax({
-			url: '/api/blogposts/'+this.props.blogpostid, 
+			url: page.base()+'/api/blogposts/'+this.props.blogpostid, 
 			method: 'PUT', 
 			contentType: 'application/json; charset=utf-8', 
 			data: JSON.stringify(blogpost)})
@@ -78,7 +78,7 @@ var BlogpostCreationPage = React.createClass({
 		}.bind(this))
 
 		.fail(function (xhr, status, err) {
-			console.error('postNewBlogpost: ', status, err.toString());
+			console.log('postNewBlogpost: ', status, err.toString());
 		}.bind(this));
 
 	},
@@ -86,7 +86,7 @@ var BlogpostCreationPage = React.createClass({
 	deleteBlogpost: function () {
 
     $.ajax({
-			url: '/api/blogposts/'+this.props.blogpostid, 
+			url: page.base()+'/api/blogposts/'+this.props.blogpostid, 
 			method: 'DELETE'})
 
 		.done(function (data, status) {
@@ -96,7 +96,7 @@ var BlogpostCreationPage = React.createClass({
 		}.bind(this))
 
 		.fail(function (xhr, status, err) {
-			console.error('postNewBlogpost: ', status, err.toString());
+			console.log('postNewBlogpost: ', status, err.toString());
 		}.bind(this));
 
 	},
@@ -125,7 +125,7 @@ var BlogpostCreationPage = React.createClass({
 	render: function() {
 		
 		return (
-			<div>
+			<div className="container">
 				<div className="row">
 					<div className="col-md-6 newPostForm">
 						<h2>Post:</h2>
@@ -144,11 +144,12 @@ var BlogpostCreationPage = React.createClass({
 					</div>
 				</div>
 				
-				Filez
-				<form action="/api/images" method="POST" encType="multipart/form-data">
-  				<input type="file" name="image" />
-  				<input className="btn btn-primary" type="submit">Tallenna</input>
-  			</form>
+					<div className="col-md-6">Filez
+						<form action="/api/images" method="POST" encType="multipart/form-data">
+		  				<input type="file" name="image" />
+		  				<input className="btn btn-primary" type="submit">Tallenna</input>
+		  			</form>
+					</div>
 
 			</div>
 		);

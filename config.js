@@ -12,6 +12,6 @@ config.dbuser = 'travelblog';
 config.dbpassword = 'testi';
 config.db = 'travelblog';
 
-
+config.baseURL = '/punpu';
 
 module.exports = config;

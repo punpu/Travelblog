@@ -6,8 +6,8 @@
 //Initialize modules
 var express = require('express');
 var app = express();
-
-module.exports = app;
+var appRouter = express.Router();
+module.exports = appRouter;
 
 var cfg = require('./config');
 var db = require('./db');
@@ -29,6 +29,7 @@ app.use(busboy({
 // Initialize routes
 require('./api_routes.js')();
 
+app.use(cfg.baseURL, appRouter);
 
 // GET: index.html
 app.get('*', function(req, res) {

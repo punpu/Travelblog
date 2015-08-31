@@ -9,6 +9,7 @@ var Router = React.createClass({
 
     var self = this;
 
+    page.base('/punpu');
 
     page('/', function (ctx) {
       self.setState({ component: <BlogPage /> });
