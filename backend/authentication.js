@@ -32,6 +32,15 @@ function initialize () {
 	  }
 	});
 
+	/*appRouter.post('/api/login', passport.authenticate('local'), function (req, res) {
+		res.redirect('/');
+	});
+
+	appRouter.get('/api/logout', function (req, res) {
+		req.logout();
+		res.status(200).send();
+	})*/
+
 };
 
 

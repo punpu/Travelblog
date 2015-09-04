@@ -9,6 +9,7 @@ var app = express();
 var appRouter = express.Router();
 module.exports = appRouter;
 
+var auth = require('./backend/authentication');
 var cfg = require('./config');
 var db = require('./backend/db');
 var path = require('path');
@@ -26,13 +27,16 @@ app.use(busboy({
 	}
 }));
 
+// Initialize authentication with passport
+auth.initialize();
+
 // Initialize routes
 require('./backend/api_routes.js')();
 
 app.use(cfg.baseURL, appRouter);
 
 // GET: index.html
-app.get('*', function(req, res) {
+appRouter.get('*', function(req, res) {
 	console.log("GET: index.html");
 	console.log(req.url);
 	res.sendFile('public/index.html', { root: path.join(__dirname) });

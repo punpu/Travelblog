@@ -2,6 +2,8 @@
 
 var BlogPage = require('./BlogPage.jsx');
 var BlogpostCreationPage = require('./BlogpostCreationPage.jsx');
+var LoginPage = require('./LoginPage.jsx');
+
 
 var Router = React.createClass({
 
@@ -13,6 +15,10 @@ var Router = React.createClass({
 
     page('/', function (ctx) {
       self.setState({ component: <BlogPage /> });
+    });
+
+    page('/login', function (ctx) {
+      self.setState({ component: <LoginPage /> });
     });
 
     page('/editblogpost/:id', function (ctx) {
