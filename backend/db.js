@@ -1,6 +1,6 @@
 // Alustaa yhteyden tietokantaan
 
-var cfg = require('./config');
+var cfg = require('../config');
 
 var db = require('knex')({
   client: 'pg',

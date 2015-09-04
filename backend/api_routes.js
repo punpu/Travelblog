@@ -1,7 +1,8 @@
 module.exports = function () {
 
 	var db = require('./db.js');
-	var appRouter = require('./server.js');
+	var appRouter = require('../app.js');
+	var auth = require('./authentication.js');
 	var inspect = require('util').inspect;
 	var fs = require('fs');
 

@@ -10,7 +10,7 @@ var appRouter = express.Router();
 module.exports = appRouter;
 
 var cfg = require('./config');
-var db = require('./db');
+var db = require('./backend/db');
 var path = require('path');
 
 var bodyParser = require('body-parser');
@@ -27,7 +27,7 @@ app.use(busboy({
 }));
 
 // Initialize routes
-require('./api_routes.js')();
+require('./backend/api_routes.js')();
 
 app.use(cfg.baseURL, appRouter);
 
