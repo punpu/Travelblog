@@ -28,6 +28,8 @@ app.use(busboy({
 }));
 
 // Initialize authentication with passport
+app.use(auth.passport.initialize());
+
 auth.initialize();
 
 // Initialize routes
