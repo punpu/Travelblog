@@ -3,6 +3,7 @@
 public/bower_components
 public/build
 public/images
+config.js
 
 # Logs
 logs

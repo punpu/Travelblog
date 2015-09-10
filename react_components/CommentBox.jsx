@@ -26,7 +26,6 @@ var CommentBox = React.createClass({
 	},
 
 	postNewComment: function (comment) {
-		console.log(comment);
 
 		$.ajax({
 			url: page.base()+'/api/blogposts/'+this.props.blogpostID+'/comments', 
@@ -61,8 +60,6 @@ var CommentBox = React.createClass({
 var CommentList = React.createClass({
 
 	render: function() {
-		console.log('CommentList data:');
-		console.log(this.props.data);
 		var commentNodes = this.props.data.map( function (comment) {
 			return (
 					<Comment key={comment.id} author={comment.author} text={comment.text} timestamp={comment.created_at} />

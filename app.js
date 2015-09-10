@@ -9,13 +9,17 @@ var app = express();
 var appRouter = express.Router();
 module.exports = appRouter;
 
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var busboy = require('connect-busboy');
+
+
+// My own modules
 var auth = require('./backend/authentication');
 var cfg = require('./config');
 var db = require('./backend/db');
-var path = require('path');
 
-var bodyParser = require('body-parser');
-var busboy = require('connect-busboy');
 
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
@@ -27,9 +31,16 @@ app.use(busboy({
 	}
 }));
 
-// Initialize authentication with passport
+app.use(cookieParser());
+app.use(require('express-session')({
+    secret: cfg.sessionSecret,
+    resave: false,
+    saveUninitialized: false
+}));
 app.use(auth.passport.initialize());
+app.use(auth.passport.session());
 
+// Initialize authentication with passport
 auth.initialize();
 
 // Initialize routes

@@ -7,7 +7,7 @@ module.exports = function () {
 	var fs = require('fs');
 
 	// Creates new blogpost
-	appRouter.post('/api/blogposts', function(req, res){
+	appRouter.post('/api/blogposts', auth.requireAuthentication, function(req, res){
 		console.log(Date()+' - POST: /api/blogposts');
 
 		if(!req.body.author || !req.body.text){
@@ -68,7 +68,7 @@ module.exports = function () {
 
 
 	// Modifies existing blogpost
-	appRouter.put('/api/blogposts/:id', function(req, res){
+	appRouter.put('/api/blogposts/:id', auth.requireAuthentication, function(req, res){
 		console.log(Date()+' - PUT: /api/blogposts/'+req.params.id);
 
 		if(!req.body.author || !req.body.text){
@@ -93,7 +93,7 @@ module.exports = function () {
 	});
 
 	// Deletes blogpost
-	appRouter.delete('/api/blogposts/:id', function(req, res){
+	appRouter.delete('/api/blogposts/:id', auth.requireAuthentication, function(req, res){
 		console.log(Date()+' - DELETE: /api/blogposts/'+req.params.id);
 
 		db.raw(
@@ -157,7 +157,7 @@ module.exports = function () {
 	});
 
 	// Uploads images to server	
-	appRouter.post('/api/images', function (req, res) {
+	appRouter.post('/api/images', auth.requireAuthentication, function (req, res) {
 		console.log(Date()+' - POST: /api/images/');
 
 		if(!req.busboy){

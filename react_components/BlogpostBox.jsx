@@ -39,7 +39,6 @@ var BlogpostBox = React.createClass({
 var BlogpostList = React.createClass({
 
 	render: function() {
-		console.log(this.props.blogposts);
 		var blogpostNodes = this.props.blogposts.map( function (blogpost) {
 			return (
 					<Blogpost key={blogpost.id} blogpostID={blogpost.id} author={blogpost.author} timestamp={blogpost.created_at}>
