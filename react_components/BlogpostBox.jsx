@@ -1,12 +1,13 @@
 
 var CommentBox = require('./CommentBox.jsx');
 
+var LoginStore = require('../flux/LoginStore');
 
 var BlogpostBox = React.createClass({
 
   getInitialState: function() {
   	return {
-  		blogposts: [] 
+  		blogposts: [],
   	};
   },
 
@@ -28,11 +29,11 @@ var BlogpostBox = React.createClass({
   render: function() {
     return (
       <div className="blogpostBox">
-      	Blogit
         <BlogpostList blogposts={this.state.blogposts} />
       </div>
     );
-  }
+  },
+
 });
 
 
@@ -59,6 +60,19 @@ var BlogpostList = React.createClass({
 
 var Blogpost = React.createClass({
 
+	getInitialState: function() {
+		return {
+  		loggedUser: LoginStore.getLoggedUser() 
+		};
+	},
+
+	componentDidMount: function() {
+  	LoginStore.addChangeListener(this._onLoginChange);
+	},
+
+  componentWillUnmount: function() {
+    LoginStore.removeChangeListener(this._onLoginChange);
+  },
 
 	goToAdminPage: function () {
 		page('/editblogpost/'+this.props.blogpostID);
@@ -71,20 +85,35 @@ var Blogpost = React.createClass({
 			rawMarkup = marked(this.props.children.toString());
 		}
 
+		var editBlogpostAnchor;
+		console.log(this.state.loggedUser);
+		if(this.state.loggedUser){
+			editBlogpostAnchor = <a className="pull-right" href="" onClick={this.goToAdminPage}>Edit blogpost</a>
+		}
+		else{
+			editBlogpostAnchor = '';
+		}
+
+
 		return (
 			<div className="blogpost">
 				<div className="blogpostHeader">
 					<span className="blogpostAuthor">
 						Kirjoittanut: {this.props.author}
 					</span>
-      		<a className="pull-right" href="" onClick={this.goToAdminPage}>Admin</a>
+      		{editBlogpostAnchor}
 				</div>
 				<div className="headerDivider" />
 				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
 				<CommentBox blogpostID={this.props.blogpostID} />
 			</div>
 		);
-	}
+	},
+
+  // Event handler for 'change' events coming from the LoginStore
+  _onLoginChange: function() {
+    this.setState({loggedUser: LoginStore.getLoggedUser()});
+  }
 
 });
 

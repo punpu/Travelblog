@@ -13,14 +13,14 @@ module.exports = function(grunt) {
         }
       },
       client: {
-        src: ['react_components/**/*.jsx'],
+        src: ['react_components/**/*.jsx', 'flux/**/*.js'],
         dest: 'public/build/app.built.js'
       }
     },
 
     watch: {
         react: {
-          files: ['react_components/**/*.jsx', 'styles/*.styl'],
+          files: ['react_components/**/*.jsx', 'styles/*.styl', 'flux/**/*.js'],
           tasks: ['stylus', 'browserify']
         }
     },

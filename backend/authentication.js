@@ -18,24 +18,24 @@ function initialize () {
       if (password !== cfg.adminPass) {
         return done(null, false, { message: 'Incorrect password.' });
       }
-      var user = {id: 567}
+      var user = {username: username}
       return done(null, user);
 	  }
 	));
 
 	passport.serializeUser(function(user, done) {
-  	done(null, user.id);
+  	done(null, user.username);
 	});
 
 	passport.deserializeUser(function(id, done) {
-	  if(id = 567){
-	    done(null, {id: 567});
+	  if(id === cfg.adminUser){
+	    done(null, {username: cfg.adminUser});
 	  }
 	});
 
 	appRouter.post('/api/login', passport.authenticate('local'), function (req, res) {
 		console.log(Date()+'Admin logged in');
-		res.status(200).send({asd: 'jee'});
+		res.status(200).send(req.user);
 	});
 
 	appRouter.get('/api/logout', function (req, res) {

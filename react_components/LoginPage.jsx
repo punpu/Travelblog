@@ -1,6 +1,6 @@
 // Login page
 
-
+var LoginActions = require('../flux/LoginActions');
 
 var LoginPage = React.createClass({
 
@@ -26,8 +26,9 @@ var LoginPage = React.createClass({
 			data: JSON.stringify(loginInfo)})
 
 		.done(function (data, status) {
+
+			LoginActions.login(data);
 			// Login complete, go to main page
-			console.log(data);
 			page('/');
 		}.bind(this))
 
