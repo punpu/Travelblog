@@ -4,10 +4,15 @@ var BlogPage = require('./BlogPage.jsx');
 var BlogpostCreationPage = require('./BlogpostCreationPage.jsx');
 var LoginPage = require('./LoginPage.jsx');
 
+var LoginActions = require('../flux/LoginActions');
 
 var Router = React.createClass({
 
   componentDidMount: function () {
+
+    // Check whether a login session exists
+    LoginActions.checkLoginSessionExists();
+
 
     var self = this;
 

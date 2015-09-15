@@ -7,9 +7,6 @@ var LoginConstants = require('./LoginConstants');
 
 var LoginActions = {
 
-  /**
-   * @param  {string} text
-   */
   login: function(user) {
     AppDispatcher.dispatch({
       actionType: LoginConstants.AUTH_LOGIN,
@@ -17,13 +14,15 @@ var LoginActions = {
     });
   },
 
-  /**
-   * @param  {string} id The ID of the ToDo item
-   * @param  {string} text
-   */
   logout: function(id, text) {
     AppDispatcher.dispatch({
       actionType: LoginConstants.AUTH_LOGOUT
+    });
+  },
+
+  checkLoginSessionExists: function() {
+    AppDispatcher.dispatch({
+      actionType: LoginConstants.AUTH_CHECKSESSION
     });
   },
 

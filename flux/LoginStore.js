@@ -59,6 +59,11 @@ AppDispatcher.register(function(action) {
       LoginStore.emitChange();
       break;
 
+    case LoginConstants.AUTH_CHECKSESSION:
+      //login(action.user);
+      LoginStore.emitChange();
+      break;
+
     default:
       // no op
   }
