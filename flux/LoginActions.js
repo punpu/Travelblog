@@ -21,9 +21,19 @@ var LoginActions = {
   },
 
   checkLoginSessionExists: function() {
-    AppDispatcher.dispatch({
-      actionType: LoginConstants.AUTH_CHECKSESSION
-    });
+    $.ajax({url: page.base()+'/api/checksession', dataType: 'json', cache: false})
+    .done(function (data) {
+
+      AppDispatcher.dispatch({
+        actionType: LoginConstants.AUTH_LOGIN,
+        user: data
+      });
+    }.bind(this))
+
+    .fail(function (xhr, status, err) {
+      console.log('/api/checksession', status, err.toString());
+    }.bind(this));
+
   },
 
 };

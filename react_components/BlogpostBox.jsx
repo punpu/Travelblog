@@ -86,7 +86,6 @@ var Blogpost = React.createClass({
 		}
 
 		var editBlogpostAnchor;
-		console.log(this.state.loggedUser);
 		if(this.state.loggedUser){
 			editBlogpostAnchor = <a className="pull-right" href="" onClick={this.goToAdminPage}>Edit blogpost</a>
 		}

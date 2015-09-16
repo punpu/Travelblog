@@ -52,15 +52,11 @@ AppDispatcher.register(function(action) {
   switch(action.actionType) {
     case LoginConstants.AUTH_LOGIN:
       login(action.user);
+      LoginStore.emitChange();
       break;
 
     case LoginConstants.AUTH_LOGOUT:
       logout();
-      LoginStore.emitChange();
-      break;
-
-    case LoginConstants.AUTH_CHECKSESSION:
-      //login(action.user);
       LoginStore.emitChange();
       break;
 

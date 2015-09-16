@@ -42,7 +42,11 @@ function initialize () {
 		req.logout();
 		console.log(Date()+'Admin logged out');
 		res.status(200).send();
-	})
+	});
+
+	appRouter.get('/api/checksession', requireAuthentication, function (req, res) {
+		res.status(200).send(req.user);
+	});
 
 };
 

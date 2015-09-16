@@ -10,10 +10,6 @@ var Router = React.createClass({
 
   componentDidMount: function () {
 
-    // Check whether a login session exists
-    LoginActions.checkLoginSessionExists();
-
-
     var self = this;
 
     page.base('/punpu');
@@ -41,6 +37,9 @@ var Router = React.createClass({
 
     page.start();
 
+    // Check whether a login session exists
+    LoginActions.checkLoginSessionExists();
+
   },
 
   getInitialState: function () {
@@ -48,7 +47,16 @@ var Router = React.createClass({
   },
 
   render: function () {
-    return this.state.component;
+    return (
+
+      <div>
+        {this.state.component}
+
+        <div id="bg">
+          <img src="../images/south_korea_flag.jpg" alt="" />
+        </div>
+      </div>
+    );
   }
 
 });

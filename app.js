@@ -35,7 +35,8 @@ app.use(cookieParser());
 app.use(require('express-session')({
     secret: cfg.sessionSecret,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {maxAge: 365 * 24 * 60 * 60 * 1000} // one year
 }));
 app.use(auth.passport.initialize());
 app.use(auth.passport.session());
