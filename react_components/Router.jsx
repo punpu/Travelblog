@@ -47,16 +47,7 @@ var Router = React.createClass({
   },
 
   render: function () {
-    return (
-
-      <div>
-        {this.state.component}
-
-        <div id="bg">
-          <img src="../images/south_korea_flag.jpg" alt="" />
-        </div>
-      </div>
-    );
+    return this.state.component;
   }
 
 });
