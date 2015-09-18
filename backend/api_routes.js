@@ -127,7 +127,6 @@ module.exports = function () {
 			console.log(error);
 		});
 	});
-
 	
 	// inserts new comment to blogpost by its id
 	appRouter.post('/api/blogposts/:id/comments', function (req, res) {
@@ -153,6 +152,24 @@ module.exports = function () {
 		.catch(function (error) {
 			console.log(error);
 		});
+	});
+
+	// Deletes comment
+	appRouter.delete('/api/comments/:id', auth.requireAuthentication, function(req, res){
+		console.log(Date()+' - DELETE: /api/comments/'+req.params.id);
+
+		db.raw(
+			'UPDATE comment '+
+			'SET deleted = TRUE '+
+			'WHERE id = ?', [req.params.id])
+		.then(function(result){
+				console.log(Date()+' - Comment deleted');
+				res.status(200).send();
+		})
+		.catch(function(error) {
+			console.log(error);
+			res.status(500).send();
+		}); 
 
 	});
 

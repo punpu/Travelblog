@@ -114,8 +114,8 @@ var CommentForm = React.createClass({
 			<div>
 				<a href="" onClick={this.openNewCommentForm}>Kirjoita uusi kommentti</a>
 				<form className="commentForm" onSubmit={this.handleSubmit} style={displayForm}>
-					<input className="form-control" type="text" placeholder="Nimi" required ref="author"/>
-					<textarea className="form-control" placeholder="Kommentti" required ref="comment" ></textarea>
+					<input className="form-control" type="text" placeholder="Nimi" required ref="author" maxLength="50" />
+					<textarea className="form-control" placeholder="Kommentti" required ref="comment" maxLength="1000" ></textarea>
 					<input className="btn btn-default" type="submit" value="Lähetä" />
 				</form>
 			</div>
@@ -129,12 +129,15 @@ var Comment = React.createClass({
 
 	render: function() {
 		
-		// var rawMarkup = '';
-		// if(this.props.children){
-		// 	rawMarkup = marked(this.props.children.toString(), {sanitize: true});
-		// }
 
-		var date = new Date(this.props.timestamp).toLocaleString();
+		var date = new Date(this.props.timestamp);
+		
+		var timestamp = ('0' + date.getDate()).slice(-2) + '.' + 
+									 ('0' + (date.getMonth()+1)).slice(-2) + '.' + 
+									 date.getFullYear() + ', ' +
+									 ('0' + date.getHours()).slice(-2) + ':' + 
+									 ('0' + date.getMinutes()).slice(-2) + ':' + 
+									 ('0' + date.getSeconds()).slice(-2);
 
 		return (
 			<div className="comment">
@@ -142,7 +145,7 @@ var Comment = React.createClass({
 					{this.props.author}
 				</span>
 				<span className="pull-right commentTimestamp">
-					{date}
+					{timestamp}
 				</span>
 				<div className="commentDivider"></div>
 				<span className="commentText">{this.props.text}</span>

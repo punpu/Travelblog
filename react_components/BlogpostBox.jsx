@@ -93,6 +93,14 @@ var Blogpost = React.createClass({
 			editBlogpostAnchor = '';
 		}
 
+		var date = new Date(this.props.timestamp);
+
+		var timestamp = ('0' + date.getDate()).slice(-2) + '.' + 
+									 ('0' + (date.getMonth()+1)).slice(-2) + '.' + 
+									 date.getFullYear() + ', ' +
+									 ('0' + date.getHours()).slice(-2) + ':' + 
+									 ('0' + date.getMinutes()).slice(-2) + ':' + 
+									 ('0' + date.getSeconds()).slice(-2);
 
 		return (
 			<div className="blogpost">
@@ -101,6 +109,9 @@ var Blogpost = React.createClass({
 						Kirjoittanut: {this.props.author}
 					</span>
       		{editBlogpostAnchor}
+      		<div className="blogpostTimestamp">
+      			{timestamp}
+      		</div>
 				</div>
 				<div className="headerDivider" />
 				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
