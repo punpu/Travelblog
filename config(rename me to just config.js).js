@@ -12,8 +12,6 @@ config.dbuser = 'travelblog';
 config.dbpassword = 'testi';
 config.db = 'travelblog';
 config.sessionSecret = 'blogsecret34935j3ukd';
-config.adminUser = 'admin';
-config.adminPass = 'admin';
 
 config.baseURL = '/punpu';
 
