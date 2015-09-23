@@ -24,7 +24,7 @@ body
 	height 200%
 	z-index -1
 
-#bg img 
+#bg img
 	position absolute 
 	top 0 
 	left 0 
@@ -33,3 +33,29 @@ body
 	margin auto 
 	min-width 50%
 	min-height 50%
+
+/* Use different background image for portrait mode */
+@media only screen and (orientation: portrait)
+	#bg img
+		display none
+	body
+		background-image: url('../images/bg_portrait.png');
+		background-repeat: repeat;
+
+.blogpost img
+	max-width 100%
+	height auto
+
+
+
+.spin
+	font-size 150%
+	animation spin 1500ms infinite linear
+
+@keyframes spin
+	0% 
+		transform rotate(0deg)
+  
+	100% 
+		transform rotate(359deg)
+  

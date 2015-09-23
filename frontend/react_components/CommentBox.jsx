@@ -1,29 +1,31 @@
 
+var CommentActions = require('../flux/comment/CommentActions');
+var CommentStore = require('../flux/comment/CommentStore');
+
+
 
 var CommentBox = React.createClass({
-
 	
   getInitialState: function() {
   	return {
-  		data: [] 
+  		comments: []
   	};
   },
 
   componentDidMount: function() {
-  	this.loadCommentsFromServer();
+  	CommentStore.addChangeListener(this._onCommentStoreChange);
+  	CommentActions.loadComments(this.props.blogpostID);
   },
 
+  componentWillUnmount: function() {
+  	CommentStore.removeChangeListener(this._onCommentStoreChange);
+  },
 
-  loadCommentsFromServer: function () {
-		$.ajax({url: page.base()+'/api/blogposts/'+this.props.blogpostID+'/comments', dataType: 'json', cache: false})
-  		.done(function (data) {
-  			this.setState({data: data});
-  		}.bind(this))
+  // Event handler for 'change' events coming from the LoginStore
+  _onCommentStoreChange: function() {
+    this.setState(CommentStore.getCommentsByBlogpost(this.props.blogpostID));
+  },
 
-  		.fail(function (xhr, status, err) {
-  			console.log('/api/blogposts/'+this.props.blogpostID+'/comments', status, err.toString());
-  		}.bind(this));
-	},
 
 	postNewComment: function (comment) {
 
@@ -46,10 +48,17 @@ var CommentBox = React.createClass({
 
 
   render: function() {
+
+  	var loadingIcon = '';
+  	if(this.state.loading){
+  		loadingIcon = <i className="glyphicon glyphicon-refresh spin"/>
+  	}
+
     return (
       <div className="commentBox">
         <h3>Kommentit</h3>
-        <CommentList data={this.state.data} />
+        {loadingIcon}
+        <CommentList comments={this.state.comments} />
         <CommentForm postNewComment={this.postNewComment}/>
       </div>
     );
@@ -60,7 +69,7 @@ var CommentBox = React.createClass({
 var CommentList = React.createClass({
 
 	render: function() {
-		var commentNodes = this.props.data.map( function (comment) {
+		var commentNodes = this.props.comments.map( function (comment) {
 			return (
 					<Comment key={comment.id} author={comment.author} text={comment.text} timestamp={comment.created_at} />
 				);

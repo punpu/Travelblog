@@ -1,5 +1,5 @@
 .blogpost
-	width 70%
+	width 100%
 	border 1px solid
 	margin-bottom 25px
 	margin-right auto
@@ -10,10 +10,15 @@
 	box-shadow 0px 0px 2px 2px grey
 
 .blogpostList
-	width 80%
+	width 95%
 	margin-top 5%
-	margin-right 10%
-	margin-left 10%
+	margin-right auto
+	margin-left auto
+
+/* Bigger blogpost margins for bigger width screens */
+@media only screen and (orientation: landscape)
+	.blogpostList
+		width 65%	
 	
 .blogpostHeader
 	font-size 95%

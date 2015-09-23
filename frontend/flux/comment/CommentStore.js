@@ -7,12 +7,15 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
+// This contains all the comments
+// Comment arrays are found under the blogposts id that they belong to
+var _comments = {};
 
 var CommentStore = assign({}, EventEmitter.prototype, {
 
-  // Get the logged users info
-  getLoggedUser: function() {
-    return _loggedUser;
+  // Returns all comments in blogpost
+  getCommentsByBlogpost: function(blogpostid) {
+    return _comments[blogpostid];
   },
 
   emitChange: function() {
@@ -35,9 +38,25 @@ var CommentStore = assign({}, EventEmitter.prototype, {
 });
 
 // Register callback to handle all updates
-AppDispatcher.register(function(action) {
+CommentStore.dispatchToken = AppDispatcher.register(function(action) {
 
   switch(action.actionType) {
+
+    case CommentConstants.COMMENT_LOAD_LOADING:
+      _comments[action.blogpostid] = {comments: [], loading: true};
+      CommentStore.emitChange();
+      break;
+
+    case CommentConstants.COMMENT_LOAD_FINISHED:
+      _comments[action.blogpostid] = {comments: action.comments, loading: false};
+      CommentStore.emitChange();
+      break;
+
+    case CommentConstants.COMMENT_LOAD_ERROR:
+      _comments[action.blogpostid] = {comments: [], loading: false, error: true};
+      CommentStore.emitChange();
+      break;
+
     case CommentConstants.COMMENT_DELETE:
       CommentStore.emitChange();
       break;
