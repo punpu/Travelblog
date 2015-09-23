@@ -4,7 +4,7 @@ var BlogPage = require('./BlogPage.jsx');
 var BlogpostCreationPage = require('./BlogpostCreationPage.jsx');
 var LoginPage = require('./LoginPage.jsx');
 
-var LoginActions = require('../flux/LoginActions');
+var LoginActions = require('../flux/login/LoginActions');
 
 var Router = React.createClass({
 

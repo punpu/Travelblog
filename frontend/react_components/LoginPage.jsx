@@ -1,6 +1,6 @@
 // Login page
 
-var LoginActions = require('../flux/LoginActions');
+var LoginActions = require('../flux/login/LoginActions');
 
 var LoginPage = React.createClass({
 

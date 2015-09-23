@@ -1,6 +1,6 @@
 
 
-var AppDispatcher = require('./AppDispatcher');
+var AppDispatcher = require('../AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var LoginConstants = require('./LoginConstants');
 var assign = require('object-assign');

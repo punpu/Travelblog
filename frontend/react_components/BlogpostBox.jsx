@@ -1,7 +1,7 @@
 
 var CommentBox = require('./CommentBox.jsx');
 
-var LoginStore = require('../flux/LoginStore');
+var LoginStore = require('../flux/login/LoginStore');
 
 var BlogpostBox = React.createClass({
 
