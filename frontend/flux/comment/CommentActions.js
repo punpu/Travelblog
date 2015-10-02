@@ -35,8 +35,40 @@ var CommentActions = {
     });
   },
 
+  // Sends a new comment to server
+  // Dispatches loading, finished and error actions
+  createComment: function (blogpostid, comment) {
+    
+  	AppDispatcher.dispatch({
+      actionType: CommentConstants.COMMENT_CREATE_LOADING,
+      blogpostid: blogpostid
+    });
 
-  delete: function(commentid) {
+    $.ajax({url: page.base()+'/api/blogposts/'+blogpostid+'/comments', 
+    	method: "POST", 
+			contentType: "application/json; charset=utf-8", 
+			data: JSON.stringify(comment)})
+
+    .done(function (data) {
+
+      AppDispatcher.dispatch({
+        actionType: CommentConstants.COMMENT_CREATE_FINISHED,
+        blogpostid: blogpostid,
+        comment: data
+      });
+    })
+
+    .fail(function (xhr, status, err) {
+      AppDispatcher.dispatch({
+        actionType: CommentConstants.COMMENT_CREATE_ERROR,
+        blogpostid: blogpostid
+      });
+    });
+
+  },
+
+
+  deleteComment: function(commentid) {
 
     AppDispatcher.dispatch({
       actionType: CommentConstants.COMMENT_DELETE_LOADING,

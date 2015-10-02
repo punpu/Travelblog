@@ -28,22 +28,7 @@ var CommentBox = React.createClass({
 
 
 	postNewComment: function (comment) {
-
-		$.ajax({
-			url: page.base()+'/api/blogposts/'+this.props.blogpostID+'/comments', 
-			method: "POST", 
-			contentType: "application/json; charset=utf-8", 
-			data: JSON.stringify(comment)})
-
-		.done(function (data, status) {
-			this.loadCommentsFromServer();
-			console.log('postNewComment status: '+status);
-		}.bind(this))
-
-		.fail(function (xhr, status, err) {
-			console.log('/api/blogposts/'+this.props.blogpostID+'/comments', status, err.toString());
-		}.bind(this));
-
+		CommentActions.createComment(this.props.blogpostID, comment);
 	},
 
 

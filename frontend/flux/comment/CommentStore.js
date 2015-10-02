@@ -57,6 +57,23 @@ CommentStore.dispatchToken = AppDispatcher.register(function(action) {
       CommentStore.emitChange();
       break;
 
+    case CommentConstants.COMMENT_CREATE_LOADING:
+      _comments[action.blogpostid].loading = true;
+      CommentStore.emitChange();
+      break;
+
+    case CommentConstants.COMMENT_CREATE_FINISHED:
+      _comments[action.blogpostid].loading = false;
+      _comments[action.blogpostid].comments.push(action.comment);
+      CommentStore.emitChange();
+      break;
+
+    case CommentConstants.COMMENT_CREATE_ERROR:
+      _comments[action.blogpostid].loading = false;
+      _comments[action.blogpostid].error = true;
+      CommentStore.emitChange();
+      break;
+
     case CommentConstants.COMMENT_DELETE:
       CommentStore.emitChange();
       break;

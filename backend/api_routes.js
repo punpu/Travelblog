@@ -118,7 +118,8 @@ module.exports = function () {
 		db.raw(
 			'select id, author, text, created_at '+
 			'from comment '+
-			'where blogpostid = ? AND deleted IS FALSE', [req.params.id])
+			'where blogpostid = ? AND deleted IS FALSE '+
+			'order by created_at', [req.params.id])
 
 		.then(function (result) {
 			res.status(200).send(result.rows);
@@ -140,14 +141,17 @@ module.exports = function () {
 
 		var date = new Date();
 
-		db.insert(
-			{ author: req.body.author, 
-				text: req.body.text, 
-				blogpostid: req.params.id }).into('comment')
-
+		db.raw(
+			'insert into comment (author, text, blogpostid) '+
+			'values(?, ?, ?) '+
+			'returning *', [req.body.author, req.body.text, req.params.id]
+			)
 		.then(function (result) {
 			console.log(Date()+' - New Comment created');
-			res.status(201).send();		
+
+			var comment = result.rows[0];
+
+			res.status(201).send(comment);
 		})
 		.catch(function (error) {
 			console.log(error);
@@ -173,7 +177,7 @@ module.exports = function () {
 
 	});
 
-	// Uploads images to server	
+	/*// Uploads images to server	
 	appRouter.post('/api/images', auth.requireAuthentication, function (req, res) {
 		console.log(Date()+' - POST: /api/images/');
 
@@ -205,5 +209,5 @@ module.exports = function () {
     });
 
     req.pipe(req.busboy);
-	});
+	});*/
 };
