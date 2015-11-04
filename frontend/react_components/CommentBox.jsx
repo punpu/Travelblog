@@ -2,7 +2,7 @@
 var CommentActions = require('../flux/comment/CommentActions');
 var CommentStore = require('../flux/comment/CommentStore');
 
-
+var i = 0;
 
 var CommentBox = React.createClass({
 	
@@ -23,7 +23,9 @@ var CommentBox = React.createClass({
 
   // Event handler for 'change' events coming from the LoginStore
   _onCommentStoreChange: function() {
-    this.setState(CommentStore.getCommentsByBlogpost(this.props.blogpostID));
+  	if( CommentStore.getCommentsByBlogpost(this.props.blogpostID)){
+    	this.setState(CommentStore.getCommentsByBlogpost(this.props.blogpostID));
+  	}
   },
 
 

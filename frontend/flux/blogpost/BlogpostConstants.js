@@ -1,0 +1,14 @@
+
+var keyMirror = require('keymirror');
+
+module.exports = keyMirror({
+  BLOGPOST_DELETE_LOADING: null,
+  BLOGPOST_DELETE_FINISHED: null,
+  BLOGPOST_DELETE_ERROR: null,
+  BLOGPOST_LOAD_LOADING: null,
+  BLOGPOST_LOAD_FINISHED: null,
+  BLOGPOST_LOAD_ERROR: null,
+  BLOGPOST_CREATE_LOADING: null,
+  BLOGPOST_CREATE_FINISHED: null,
+  BLOGPOST_CREATE_ERROR: null,
+});

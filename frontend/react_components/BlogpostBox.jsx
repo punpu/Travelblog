@@ -2,6 +2,8 @@
 var CommentBox = require('./CommentBox.jsx');
 
 var LoginStore = require('../flux/login/LoginStore');
+var BlogpostActions = require('../flux/blogpost/BlogpostActions');
+var BlogpostStore = require('../flux/blogpost/BlogpostStore');
 
 var BlogpostBox = React.createClass({
 
@@ -12,19 +14,18 @@ var BlogpostBox = React.createClass({
   },
 
   componentDidMount: function() {
-  	this.loadBlogpostsFromServer();
+  	BlogpostStore.addChangeListener(this._onBlogpostStoreChange);
+  	BlogpostActions.loadBlogposts();
   },
 
-  loadBlogpostsFromServer: function () {
-		$.ajax({url: page.base()+'/api/blogposts', dataType: 'json', cache: false})
-		.done(function (data) {
-			this.setState({blogposts: data});
-		}.bind(this))
+  componentWillUnmount: function() {
+  	BlogpostStore.removeChangeListener(this._onBlogpostStoreChange);
+  },
 
-		.fail(function (xhr, status, err) {
-			console.log('/api/blogposts', status, err.toString());
-		}.bind(this));
-	},
+	// Event handler for 'change' events coming from the BlogpostStore
+  _onBlogpostStoreChange: function() {
+    this.setState(BlogpostStore.getBlogposts());
+  },
 
   render: function() {
     return (

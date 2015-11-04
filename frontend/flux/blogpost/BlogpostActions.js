@@ -1,51 +1,43 @@
 /*
- * CommentActions
+ * BlogpostActions
  */
 
 var AppDispatcher = require('../AppDispatcher');
-var CommentConstants = require('./CommentConstants');
+var BlogpostConstants = require('./BlogpostConstants');
 
-var CommentActions = {
+var BlogpostActions = {
 
 
-  // Loads comments for one blogpost from server
+  // Loads Blogposts from server
   // Dispatches loading, finished and error actions
-  loadComments: function (blogpostid) {
+  loadBlogposts: function () {
 
-    // Use a timeout of 0 to push this dispatch to the end of execution queue
-    // so the previous dispatch can be finished before running a new one
-    setTimeout( function () {
-      AppDispatcher.dispatch({
-        actionType: CommentConstants.COMMENT_LOAD_LOADING,
-        blogpostid: blogpostid
-      });  
-    }, 0 );
-    
+    AppDispatcher.dispatch({
+      actionType: BlogpostConstants.BLOGPOST_LOAD_LOADING,
+    });
 
-    $.ajax({url: page.base()+'/api/blogposts/'+blogpostid+'/comments', dataType: 'json', cache: false})
+    $.ajax({url: page.base()+'/api/blogposts/', dataType: 'json', cache: false})
     .done(function (data) {
 
       AppDispatcher.dispatch({
-        actionType: CommentConstants.COMMENT_LOAD_FINISHED,
-        blogpostid: blogpostid,
-        comments: data
+        actionType: BlogpostConstants.BLOGPOST_LOAD_FINISHED,
+        blogposts: data
       });
     })
 
     .fail(function (xhr, status, err) {
       AppDispatcher.dispatch({
-        actionType: CommentConstants.COMMENT_LOAD_ERROR,
-        blogpostid: blogpostid
+        actionType: BlogpostConstants.BLOGPOST_LOAD_ERROR,
       });
     });
   },
 
-  // Sends a new comment to server
+  /*// Sends a new comment to server
   // Dispatches loading, finished and error actions
   createComment: function (blogpostid, comment) {
     
   	AppDispatcher.dispatch({
-      actionType: CommentConstants.COMMENT_CREATE_LOADING,
+      actionType: BlogpostConstants.BLOGPOST_CREATE_LOADING,
       blogpostid: blogpostid
     });
 
@@ -57,7 +49,7 @@ var CommentActions = {
     .done(function (data) {
 
       AppDispatcher.dispatch({
-        actionType: CommentConstants.COMMENT_CREATE_FINISHED,
+        actionType: BlogpostConstants.BLOGPOST_CREATE_FINISHED,
         blogpostid: blogpostid,
         comment: data
       });
@@ -65,7 +57,7 @@ var CommentActions = {
 
     .fail(function (xhr, status, err) {
       AppDispatcher.dispatch({
-        actionType: CommentConstants.COMMENT_CREATE_ERROR,
+        actionType: BlogpostConstants.BLOGPOST_CREATE_ERROR,
         blogpostid: blogpostid
       });
     });
@@ -76,7 +68,7 @@ var CommentActions = {
   deleteComment: function(commentid) {
 
     AppDispatcher.dispatch({
-      actionType: CommentConstants.COMMENT_DELETE_LOADING,
+      actionType: BlogpostConstants.BLOGPOST_DELETE_LOADING,
       commentid: commentid
     });
   
@@ -87,22 +79,22 @@ var CommentActions = {
     .done(function (data) {
 
       AppDispatcher.dispatch({
-        actionType: CommentConstants.COMMENT_DELETE_FINISHED,
+        actionType: BlogpostConstants.BLOGPOST_DELETE_FINISHED,
         commentid: commentid
       });
     })
 
     .fail(function (xhr, status, err) {
       AppDispatcher.dispatch({
-        actionType: CommentConstants.COMMENT_DELETE_ERROR,
+        actionType: BlogpostConstants.BLOGPOST_DELETE_ERROR,
         commentid: commentid
       });
     });
 
 
     
-  },
+  },*/
 
 };
 
-module.exports = CommentActions;
+module.exports = BlogpostActions;
