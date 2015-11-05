@@ -1,5 +1,7 @@
 
 
+var BlogpostActions = require('../flux/blogpost/BlogpostActions');
+var BlogpostStore = require('../flux/blogpost/BlogpostStore');
 
 
 // Admin page for creating and editing blogposts and uploading images
@@ -7,7 +9,9 @@ var BlogpostCreationPage = React.createClass({
 
 	componentDidMount: function() {
 		if(this.props.blogpostid){
-			this.fetchExistingBlogpost();
+			var blogpost = BlogpostStore.getBlogpostByID(this.props.blogpostid);
+			this.setState({blogpost: blogpost});
+			this.setState({preview: marked(blogpost.text) });
 		}
 	},
 
@@ -16,18 +20,6 @@ var BlogpostCreationPage = React.createClass({
 			preview: "",
 			blogpost: {author: "", text: ""}
 		};
-	},
-
-	fetchExistingBlogpost: function () {
-		$.ajax({url: page.base()+'/api/blogposts/'+this.props.blogpostid, dataType: 'json', cache: false})
-		.done(function (data) {
-			this.setState({blogpost: data});
-			this.setState({preview: marked(this.state.blogpost.text) });
-		}.bind(this))
-
-		.fail(function (xhr, status, err) {
-			console.log('/api/blogposts', status, err.toString());
-		}.bind(this));
 	},
 
 	postNewBlogpost: function () {
@@ -40,21 +32,7 @@ var BlogpostCreationPage = React.createClass({
 
     var blogpost = {author: author, text: blogpostText};
 
-    $.ajax({
-			url: page.base()+'/api/blogposts/', 
-			method: "POST", 
-			contentType: "application/json; charset=utf-8", 
-			data: JSON.stringify(blogpost)})
-
-		.done(function (data, status) {
-			
-			console.log('postNewBlogpost status: '+status);
-		}.bind(this))
-
-		.fail(function (xhr, status, err) {
-			console.log('postNewBlogpost: ', status, err.toString());
-		}.bind(this));
-
+    BlogpostActions.createBlogpost(blogpost);
 	},
 
 	editBlogpost: function () {

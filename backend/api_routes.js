@@ -17,18 +17,21 @@ module.exports = function () {
 		}
 		var date = new Date();
 
-		db.insert({author: req.body.author, 
-							 text: req.body.text,
-							 created_at: date.toISOString(),
-							 updated_at: date.toISOString()}).into('blogpost')
+		db.raw(
+			'insert into blogpost (author, text, created_at, updated_at) '+
+			'values (?, ?, ?, ?) '+
+			'returning *', [req.body.author, req.body.text, date.toISOString(), date.toISOString()]
+		)
 		.then(function(result){
 				console.log(Date()+' - New blogpost created');
-				res.status(201).send();
+				var blogpost = result.rows[0];
+
+				res.status(201).send(blogpost);
 		})
 		.catch(function(error) {
 			console.log(error);
 			res.status(500).send();
-		}); 
+		});
 
 	});
 

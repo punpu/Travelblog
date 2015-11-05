@@ -12,9 +12,16 @@ var _blogposts = {};
 
 var BlogpostStore = assign({}, EventEmitter.prototype, {
 
-  // Returns all blogposts
   getBlogposts: function() {
     return _blogposts;
+  },
+
+  getBlogpostByID: function (id) {
+    for (var i = 0; i < _blogposts.blogposts.length; i++) {
+      if( _blogposts.blogposts[i].id == id ){
+        return _blogposts.blogposts[i];
+      }
+    };
   },
 
 
@@ -60,7 +67,7 @@ BlogpostStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case BlogpostConstants.BLOGPOST_CREATE_FINISHED:
       _blogposts.loading = false;
-      _blogposts.blogposts.push(action.comment);
+      _blogposts.blogposts.unshift(action.blogpost);
       BlogpostStore.emitChange();
       break;
 

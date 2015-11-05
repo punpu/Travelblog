@@ -32,40 +32,38 @@ var BlogpostActions = {
     });
   },
 
-  /*// Sends a new comment to server
+  // Sends a new blogpost to server
   // Dispatches loading, finished and error actions
-  createComment: function (blogpostid, comment) {
+  createBlogpost: function (blogpost) {
     
   	AppDispatcher.dispatch({
       actionType: BlogpostConstants.BLOGPOST_CREATE_LOADING,
-      blogpostid: blogpostid
     });
 
-    $.ajax({url: page.base()+'/api/blogposts/'+blogpostid+'/comments', 
-    	method: "POST", 
+    $.ajax({
+			url: page.base()+'/api/blogposts/', 
+			method: "POST", 
 			contentType: "application/json; charset=utf-8", 
-			data: JSON.stringify(comment)})
+			data: JSON.stringify(blogpost)})
 
-    .done(function (data) {
+		.done(function (data, status) {
+			console.log('asd');
+			AppDispatcher.dispatch({
+	      actionType: BlogpostConstants.BLOGPOST_CREATE_FINISHED,
+	      blogpost: data
+	    });
+		})
 
-      AppDispatcher.dispatch({
-        actionType: BlogpostConstants.BLOGPOST_CREATE_FINISHED,
-        blogpostid: blogpostid,
-        comment: data
-      });
-    })
-
-    .fail(function (xhr, status, err) {
-      AppDispatcher.dispatch({
-        actionType: BlogpostConstants.BLOGPOST_CREATE_ERROR,
-        blogpostid: blogpostid
-      });
-    });
+		.fail(function (xhr, status, err) {
+			AppDispatcher.dispatch({
+	      actionType: BlogpostConstants.BLOGPOST_CREATE_ERROR,
+	    });
+		});
 
   },
 
 
-  deleteComment: function(commentid) {
+  /*deleteComment: function(commentid) {
 
     AppDispatcher.dispatch({
       actionType: BlogpostConstants.BLOGPOST_DELETE_LOADING,
@@ -89,10 +87,7 @@ var BlogpostActions = {
         actionType: BlogpostConstants.BLOGPOST_DELETE_ERROR,
         commentid: commentid
       });
-    });
-
-
-    
+    }); 
   },*/
 
 };
