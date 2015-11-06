@@ -36,7 +36,7 @@ var LoginPage = React.createClass({
 			// Show login error message
 			this.setState({showLoginError: true});
 
-	    // hide error after 1000 milliseconds
+	    // hide error after a while
 	    setTimeout(function(){
 	      this.setState({showLoginError: false});
 	    }.bind(this), 3000);
@@ -65,7 +65,7 @@ var LoginPage = React.createClass({
 					<label>Password:</label>
 					<input className="form-control" type="password" ref="password" />
 				</div>
-				<a className="btn btn-primary" onClick={this.postLoginInfo}>Login</a>
+				<a href="#" className="btn btn-primary" onClick={this.postLoginInfo} >Login</a>
 				{errorMessage}
 			</form>
 		);

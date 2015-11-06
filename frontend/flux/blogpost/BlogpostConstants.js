@@ -11,4 +11,8 @@ module.exports = keyMirror({
   BLOGPOST_CREATE_LOADING: null,
   BLOGPOST_CREATE_FINISHED: null,
   BLOGPOST_CREATE_ERROR: null,
+  BLOGPOST_EDIT_LOADING: null,
+  BLOGPOST_EDIT_FINISHED: null,
+  BLOGPOST_EDIT_ERROR: null,
+
 });

@@ -83,10 +83,16 @@ module.exports = function () {
 		db.raw(
 			'UPDATE blogpost '+
 			'SET author = ?, text = ?, updated_at = current_timestamp '+
-			'WHERE id = ?', [req.body.author, req.body.text, req.params.id])
+			'WHERE id = ? '+
+			'returning *', [req.body.author, req.body.text, req.params.id])
 		.then(function(result){
 				console.log(Date()+' - Blogpost edited');
-				res.status(200).send();
+
+				var blogpost;
+				if(result.rows.length > 0){
+					blogpost = result.rows[0];
+				}
+				res.status(200).send(blogpost);
 		})
 		.catch(function(error) {
 			console.log(error);

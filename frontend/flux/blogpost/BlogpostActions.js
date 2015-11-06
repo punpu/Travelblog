@@ -34,7 +34,7 @@ var BlogpostActions = {
 
   // Sends a new blogpost to server
   // Dispatches loading, finished and error actions
-  createBlogpost: function (blogpost) {
+  createBlogpost: function (blogpost, callback) {
     
   	AppDispatcher.dispatch({
       actionType: BlogpostConstants.BLOGPOST_CREATE_LOADING,
@@ -47,11 +47,12 @@ var BlogpostActions = {
 			data: JSON.stringify(blogpost)})
 
 		.done(function (data, status) {
-			console.log('asd');
 			AppDispatcher.dispatch({
 	      actionType: BlogpostConstants.BLOGPOST_CREATE_FINISHED,
 	      blogpost: data
 	    });
+
+	    if(callback){callback();}
 		})
 
 		.fail(function (xhr, status, err) {
@@ -63,32 +64,66 @@ var BlogpostActions = {
   },
 
 
-  /*deleteComment: function(commentid) {
+  editBlogpost: function (blogpost, callback) {
+    
+  	AppDispatcher.dispatch({
+      actionType: BlogpostConstants.BLOGPOST_EDIT_LOADING,
+    });
+
+    $.ajax({
+			url: page.base()+'/api/blogposts/'+blogpost.id, 
+			method: 'PUT',
+			contentType: 'application/json; charset=utf-8', 
+			data: JSON.stringify(blogpost)})
+
+		.done(function (data, status) {
+			AppDispatcher.dispatch({
+	      actionType: BlogpostConstants.BLOGPOST_EDIT_FINISHED,
+	      blogpost: data
+	    });
+
+	    if(callback){callback();}
+		})
+
+		.fail(function (xhr, status, err) {
+			AppDispatcher.dispatch({
+	      actionType: BlogpostConstants.BLOGPOST_EDIT_ERROR,
+	    });
+		});
+
+  },
+
+
+  // parameter callback is used to redirect
+  // the page when the blogpost is successfully deleted
+  deleteBlogpost: function(blogpostid, callback) {
 
     AppDispatcher.dispatch({
       actionType: BlogpostConstants.BLOGPOST_DELETE_LOADING,
-      commentid: commentid
+      blogpostid: blogpostid
     });
   
     $.ajax({
-      url: page.base()+'/api/comments/'+commentid, 
+      url: page.base()+'/api/blogposts/'+blogpostid, 
       method: 'DELETE'})
 
     .done(function (data) {
 
       AppDispatcher.dispatch({
         actionType: BlogpostConstants.BLOGPOST_DELETE_FINISHED,
-        commentid: commentid
+        blogpostid: blogpostid
       });
+
+      if(callback){callback();}
     })
 
     .fail(function (xhr, status, err) {
       AppDispatcher.dispatch({
         actionType: BlogpostConstants.BLOGPOST_DELETE_ERROR,
-        commentid: commentid
+        blogpostid: blogpostid
       });
     }); 
-  },*/
+  },
 
 };
 

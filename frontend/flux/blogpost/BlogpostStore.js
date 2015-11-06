@@ -77,7 +77,47 @@ BlogpostStore.dispatchToken = AppDispatcher.register(function(action) {
       BlogpostStore.emitChange();
       break;
 
-    case BlogpostConstants.BLOGPOST_DELETE:
+
+    case BlogpostConstants.BLOGPOST_EDIT_LOADING:
+      _blogposts.loading = true;
+      BlogpostStore.emitChange();
+      break;
+
+    case BlogpostConstants.BLOGPOST_EDIT_FINISHED:
+      _blogposts.loading = false;
+      // _blogposts.blogposts.unshift(action.blogpost);
+      BlogpostStore.emitChange();
+      break;
+
+    case BlogpostConstants.BLOGPOST_EDIT_ERROR:
+      _blogposts.loading = false;
+      _blogposts.error = true;
+      BlogpostStore.emitChange();
+      break;
+
+
+    case BlogpostConstants.BLOGPOST_DELETE_LOADING:
+      _blogposts.loading = true;
+      BlogpostStore.emitChange();
+      break;
+
+
+    case BlogpostConstants.BLOGPOST_DELETE_FINISHED:
+      _blogposts.loading = false;
+
+      for (var i = 0; i < _blogposts.blogposts.length; i++) {
+        if( _blogposts.blogposts[i].id == action.blogpostid ){
+          _blogposts.blogposts.splice(i, 1);
+        }
+      };
+
+      BlogpostStore.emitChange();
+      break;
+
+
+    case BlogpostConstants.BLOGPOST_DELETE_ERROR:
+      _blogposts.loading = false;
+      _blogposts.error = true;
       BlogpostStore.emitChange();
       break;
   

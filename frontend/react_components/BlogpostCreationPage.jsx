@@ -32,7 +32,10 @@ var BlogpostCreationPage = React.createClass({
 
     var blogpost = {author: author, text: blogpostText};
 
-    BlogpostActions.createBlogpost(blogpost);
+    BlogpostActions.createBlogpost(blogpost, function () {
+    	// Redirect when successful
+    	page('/');
+    });
 	},
 
 	editBlogpost: function () {
@@ -43,40 +46,21 @@ var BlogpostCreationPage = React.createClass({
     	return;
     }
 
-    var blogpost = {author: author, text: blogpostText};
+    var blogpost = {author: author, text: blogpostText, id: this.props.blogpostid};
 
-    $.ajax({
-			url: page.base()+'/api/blogposts/'+this.props.blogpostid, 
-			method: 'PUT', 
-			contentType: 'application/json; charset=utf-8', 
-			data: JSON.stringify(blogpost)})
-
-		.done(function (data, status) {
-			console.log('Blogpost edited');
-		}.bind(this))
-
-		.fail(function (xhr, status, err) {
-			console.log('postNewBlogpost: ', status, err.toString());
-		}.bind(this));
+    BlogpostActions.editBlogpost(blogpost, function () {
+    	// Redirect if successful
+    	page('/');
+    });
 
 	},
 
 	deleteBlogpost: function () {
 
-    $.ajax({
-			url: page.base()+'/api/blogposts/'+this.props.blogpostid, 
-			method: 'DELETE'})
-
-		.done(function (data, status) {
-			console.log('Blogpost deleted');
+		BlogpostActions.deleteBlogpost(this.props.blogpostid, function () {
+			// If successful, will redirect
 			page('/');
-
-		}.bind(this))
-
-		.fail(function (xhr, status, err) {
-			console.log('postNewBlogpost: ', status, err.toString());
-		}.bind(this));
-
+		});
 	},
 
 	// Either edit or post a new blogpost depending on whether the id exists
@@ -87,7 +71,6 @@ var BlogpostCreationPage = React.createClass({
 		else{
 			this.postNewBlogpost();
 		}
-		page('/');
 	},
 
 	// Update blogpost and preview states, so input values and preview change
@@ -122,12 +105,12 @@ var BlogpostCreationPage = React.createClass({
 					</div>
 				</div>
 				
-					<div className="col-md-6">Filez
-						<form action="/api/images" method="POST" encType="multipart/form-data">
-		  				<input type="file" name="image" />
-		  				<input className="btn btn-primary" type="submit">Tallenna</input>
-		  			</form>
-					</div>
+				<div className="col-md-6">Filez
+					<form action="/api/images" method="POST" encType="multipart/form-data">
+	  				<input type="file" name="image" />
+	  				<input className="btn btn-primary" type="submit">Tallenna</input>
+	  			</form>
+				</div>
 
 			</div>
 		);
