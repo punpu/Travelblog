@@ -1,7 +1,7 @@
 // Blog page, shows the blog
 
 
-var BlogpostBox = require('./BlogpostBox.jsx');
+var BlogpostList = require('./BlogpostList.jsx');
 
 var BlogPage = React.createClass({
 
@@ -17,7 +17,7 @@ var BlogPage = React.createClass({
 
 	render: function() {
 		return (
-			<BlogpostBox />
+			<BlogpostList />
 		);
 	}
 

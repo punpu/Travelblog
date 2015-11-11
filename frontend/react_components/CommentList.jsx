@@ -4,9 +4,10 @@ var CommentStore = require('../flux/comment/CommentStore');
 
 var i = 0;
 
-var CommentBox = React.createClass({
-	
-  getInitialState: function() {
+
+var CommentList = React.createClass({
+
+	getInitialState: function() {
   	return {
   		comments: []
   	};
@@ -34,38 +35,25 @@ var CommentBox = React.createClass({
 	},
 
 
-  render: function() {
-
-  	var loadingIcon = '';
-  	if(this.state.loading){
-  		loadingIcon = <i className="glyphicon glyphicon-refresh spin"/>
-  	}
-
-    return (
-      <div className="commentBox">
-        <h3>Kommentit</h3>
-        {loadingIcon}
-        <CommentList comments={this.state.comments} />
-        <CommentForm postNewComment={this.postNewComment}/>
-      </div>
-    );
-  }
-});
-
-
-var CommentList = React.createClass({
-
 	render: function() {
-		var commentNodes = this.props.comments.map( function (comment) {
+		var commentNodes = this.state.comments.map( function (comment) {
 			return (
 					<Comment key={comment.id} author={comment.author} text={comment.text} timestamp={comment.created_at} />
 				);
 		});
 
+		var loadingIcon = '';
+  	if(this.state.loading){
+  		loadingIcon = <i className="glyphicon glyphicon-refresh spin"/>
+  	}
+
 		return (
-			<div className="commentList">
+			<div className="commentBox">
+        <h3>Kommentit</h3>
+        {loadingIcon}
 				{commentNodes}
-			</div>
+        <CommentForm postNewComment={this.postNewComment}/>
+      </div>
 		);
 	}
 
@@ -151,4 +139,4 @@ var Comment = React.createClass({
 
 });
 
-module.exports = CommentBox;
+module.exports = CommentList;

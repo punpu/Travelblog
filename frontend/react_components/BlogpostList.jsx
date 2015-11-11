@@ -1,13 +1,14 @@
 
-var CommentBox = require('./CommentBox.jsx');
+var CommentList = require('./CommentList.jsx');
 
 var LoginStore = require('../flux/login/LoginStore');
 var BlogpostActions = require('../flux/blogpost/BlogpostActions');
 var BlogpostStore = require('../flux/blogpost/BlogpostStore');
 
-var BlogpostBox = React.createClass({
 
-  getInitialState: function() {
+var BlogpostList = React.createClass({
+
+	getInitialState: function() {
   	return {
   		blogposts: [],
   	};
@@ -27,21 +28,9 @@ var BlogpostBox = React.createClass({
     this.setState(BlogpostStore.getBlogposts());
   },
 
-  render: function() {
-    return (
-      <div className="blogpostBox">
-        <BlogpostList blogposts={this.state.blogposts} />
-      </div>
-    );
-  },
-
-});
-
-
-var BlogpostList = React.createClass({
 
 	render: function() {
-		var blogpostNodes = this.props.blogposts.map( function (blogpost) {
+		var blogpostNodes = this.state.blogposts.map( function (blogpost) {
 			return (
 					<Blogpost key={blogpost.id} blogpostID={blogpost.id} author={blogpost.author} timestamp={blogpost.created_at}>
 	          {blogpost.text}
@@ -116,7 +105,7 @@ var Blogpost = React.createClass({
 				</div>
 				<div className="headerDivider" />
 				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
-				<CommentBox blogpostID={this.props.blogpostID} />
+				<CommentList blogpostID={this.props.blogpostID} />
 			</div>
 		);
 	},
@@ -128,4 +117,4 @@ var Blogpost = React.createClass({
 
 });
 
-module.exports = BlogpostBox;
+module.exports = BlogpostList;
