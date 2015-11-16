@@ -124,11 +124,18 @@ module.exports = function () {
 	appRouter.get('/api/blogposts/:id/comments', function (req, res) {
 		console.log(Date()+' - GET: /api/blogposts/'+req.params.id+'/comments');
 
+		var offset = 0;
+		if( req.query.offset ){
+			offset = req.query.offset;
+		}
+
 		db.raw(
 			'select id, author, text, created_at '+
 			'from comment '+
 			'where blogpostid = ? AND deleted IS FALSE '+
-			'order by created_at', [req.params.id])
+			'order by created_at '+
+			'limit 5 offset ?'
+			, [req.params.id, offset])
 
 		.then(function (result) {
 			res.status(200).send(result.rows);

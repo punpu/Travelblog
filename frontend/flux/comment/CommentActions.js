@@ -10,7 +10,7 @@ var CommentActions = {
 
   // Loads comments for one blogpost from server
   // Dispatches loading, finished and error actions
-  loadComments: function (blogpostid) {
+  loadComments: function (blogpostid, offset) {
 
     // Use a timeout of 0 to push this dispatch to the end of execution queue
     // so the previous dispatch can be finished before running a new one
@@ -22,7 +22,10 @@ var CommentActions = {
     }, 0 );
     
 
-    $.ajax({url: page.base()+'/api/blogposts/'+blogpostid+'/comments', dataType: 'json', cache: false})
+    $.ajax({
+      url: page.base()+'/api/blogposts/'+blogpostid+'/comments'+'?offset='+offset, 
+      dataType: 'json', 
+      cache: false})
     .done(function (data) {
 
       AppDispatcher.dispatch({

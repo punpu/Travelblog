@@ -2,8 +2,6 @@
 var CommentActions = require('../flux/comment/CommentActions');
 var CommentStore = require('../flux/comment/CommentStore');
 
-var i = 0;
-
 
 var CommentList = React.createClass({
 
@@ -15,7 +13,7 @@ var CommentList = React.createClass({
 
   componentDidMount: function() {
   	CommentStore.addChangeListener(this._onCommentStoreChange);
-  	CommentActions.loadComments(this.props.blogpostID);
+  	CommentActions.loadComments(this.props.blogpostID, this.state.comments.length);
   },
 
   componentWillUnmount: function() {
@@ -29,9 +27,23 @@ var CommentList = React.createClass({
   	}
   },
 
+  // shouldComponentUpdate: function(nextProps, nextState) {
+  // 	if(nextState.comments.length !== this.state.comments.length){
+  // 		return true;
+  // 	}
+  // 	else{
+  // 		console.log('no update');
+  // 		return false;
+  // 	}
+  // },
+
 
 	postNewComment: function (comment) {
 		CommentActions.createComment(this.props.blogpostID, comment);
+	},
+
+	loadMoreComments: function () {
+		CommentActions.loadComments(this.props.blogpostID, this.state.comments.length);
 	},
 
 
@@ -52,6 +64,7 @@ var CommentList = React.createClass({
         <h3>Kommentit</h3>
         {loadingIcon}
 				{commentNodes}
+				<a href='' onClick={this.loadMoreComments}>Näytä lisää kommentteja</a>
         <CommentForm postNewComment={this.postNewComment}/>
       </div>
 		);
