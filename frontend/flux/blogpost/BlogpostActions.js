@@ -10,13 +10,17 @@ var BlogpostActions = {
 
   // Loads Blogposts from server
   // Dispatches loading, finished and error actions
-  loadBlogposts: function () {
+  loadBlogposts: function (offset) {
 
     AppDispatcher.dispatch({
       actionType: BlogpostConstants.BLOGPOST_LOAD_LOADING,
     });
 
-    $.ajax({url: page.base()+'/api/blogposts/', dataType: 'json', cache: false})
+
+    $.ajax({
+    	url: page.base()+'/api/blogposts/'+'?offset='+offset, 
+    	dataType: 'json', 
+    	cache: false})
     .done(function (data) {
 
       AppDispatcher.dispatch({

@@ -8,7 +8,7 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 
 // This contains all the blogposts
-var _blogposts = {};
+var _blogposts = {blogposts: [], loading: false, error: false};
 
 var BlogpostStore = assign({}, EventEmitter.prototype, {
 
@@ -46,12 +46,23 @@ BlogpostStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.actionType) {
 
     case BlogpostConstants.BLOGPOST_LOAD_LOADING:
-      _blogposts = {blogposts: [], loading: true};
+      _blogposts.loading = true;
+      _blogposts.error = false;
+      
       BlogpostStore.emitChange();
       break;
 
     case BlogpostConstants.BLOGPOST_LOAD_FINISHED:
-      _blogposts = {blogposts: action.blogposts, loading: false};
+      _blogposts.loading = false;
+      _blogposts.error = false;
+
+      if(action.blogposts.length > 0){
+        _blogposts.blogposts.push(action.blogposts[0]);
+      }
+      else{
+        _blogposts.noMoreBlogposts = true;
+      }
+
       BlogpostStore.emitChange();
       break;
 

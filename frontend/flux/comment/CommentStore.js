@@ -47,6 +47,7 @@ CommentStore.dispatchToken = AppDispatcher.register(function(action) {
         _comments[action.blogpostid].loading = true;
       }
       else{
+        // Initialize the object for this blogposts comments
         _comments[action.blogpostid] = {comments: [], loading: true, error: false};
       }
 

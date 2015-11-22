@@ -6,7 +6,11 @@ var BlogpostActions = require('../flux/blogpost/BlogpostActions');
 var BlogpostStore = require('../flux/blogpost/BlogpostStore');
 
 
+
 var BlogpostList = React.createClass({
+
+	_BodyElement: document.body,
+	_HTMLElement: document.documentElement,
 
 	getInitialState: function() {
   	return {
@@ -16,11 +20,29 @@ var BlogpostList = React.createClass({
 
   componentDidMount: function() {
   	BlogpostStore.addChangeListener(this._onBlogpostStoreChange);
-  	BlogpostActions.loadBlogposts();
+  	BlogpostActions.loadBlogposts(this.state.blogposts.length);
+
+  	window.addEventListener('scroll', this.handleScroll);
   },
 
   componentWillUnmount: function() {
   	BlogpostStore.removeChangeListener(this._onBlogpostStoreChange);
+
+  	window.removeEventListener('scroll', this.handleScroll);
+  },
+
+  handleScroll: function (event) {
+  	// console.log('scrolltop: '+this._BodyElement.scrollTop);
+  	// console.log('scrollheight: '+ this._BodyElement.scrollHeight);
+  	// console.log('clientheight: '+ this._BodyElement.clientHeight);
+
+  	if(this._BodyElement.scrollHeight - this._BodyElement.scrollTop === this._BodyElement.clientHeight){
+  		console.log('lopussa');
+  	}
+  },
+
+  loadMoreBlogposts: function () {
+  	BlogpostActions.loadBlogposts(this.state.blogposts.length);
   },
 
 	// Event handler for 'change' events coming from the BlogpostStore
@@ -32,15 +54,30 @@ var BlogpostList = React.createClass({
 	render: function() {
 		var blogpostNodes = this.state.blogposts.map( function (blogpost) {
 			return (
-					<Blogpost key={blogpost.id} blogpostID={blogpost.id} author={blogpost.author} timestamp={blogpost.created_at}>
-	          {blogpost.text}
-	        </Blogpost>
-				);
+				<Blogpost key={blogpost.id} blogpostID={blogpost.id} author={blogpost.author} timestamp={blogpost.created_at}>
+          {blogpost.text}
+        </Blogpost>
+			);
 		});
+
+		var loadMore;
+		if(this.state.noMoreBlogposts){
+			loadMore = (
+				<div style={loadMoreButtonCSS}>Ei enempää blogikirjoituksia</div>
+			);
+		}
+		else{
+			loadMore = (
+				<button className="btn btn-default" style={loadMoreButtonCSS} onClick={this.loadMoreBlogposts}>
+					Lataa lisää blogikirjoituksia
+				</button>
+			);
+		}
 
 		return (
 			<div className="blogpostList">
 				{blogpostNodes}
+				{loadMore}
 			</div>
 		);
 	}
@@ -74,6 +111,7 @@ var Blogpost = React.createClass({
 		if(this.props.children){
 			rawMarkup = marked(this.props.children.toString());
 		}
+
 
 		var editBlogpostAnchor;
 		if(this.state.loggedUser){
@@ -116,5 +154,12 @@ var Blogpost = React.createClass({
   }
 
 });
+
+var loadMoreButtonCSS = {
+	display: "block",
+	width: "20em", 
+	marginBottom: "25px",
+	marginLeft: "auto",
+	marginRight: "auto"};
 
 module.exports = BlogpostList;

@@ -39,10 +39,17 @@ module.exports = function () {
 	appRouter.get('/api/blogposts', function  (req, res) {
 		console.log(Date()+' - GET: /api/blogposts');
 
+		var offset = 0;
+		if( req.query.offset ){
+			offset = req.query.offset;
+		}
+
 		db
 		.select().table('blogpost')
 		.whereRaw('deleted IS FALSE')
 		.orderBy('created_at', 'desc')
+		.limit(1)
+		.offset(offset)
 
 		.then(function(blogposts) {
 			res.status(200).send(blogposts);
