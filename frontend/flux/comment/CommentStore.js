@@ -56,8 +56,15 @@ CommentStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case CommentConstants.COMMENT_LOAD_FINISHED:
       _comments[action.blogpostid].loading = false;
+      
       // Push all new comments from action.comments to stores comments array
-      _comments[action.blogpostid].comments.push.apply(_comments[action.blogpostid].comments, action.comments);
+      if(action.comments.length > 0){
+        _comments[action.blogpostid].comments.push.apply(_comments[action.blogpostid].comments, action.comments);  
+      }
+      else{
+        _comments[action.blogpostid].noMoreComments = true;
+      }
+      
       CommentStore.emitChange();
       break;
 

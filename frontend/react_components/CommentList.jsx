@@ -59,12 +59,20 @@ var CommentList = React.createClass({
   		loadingIcon = <i className="glyphicon glyphicon-refresh spin"/>
   	}
 
+  	var showMoreCommentsButton = (
+  		<a href='' onClick={this.loadMoreComments}>Näytä lisää kommentteja</a>
+  	);
+
+  	if( this.state.noMoreComments || this.state.comments.length < 5 ){
+  		showMoreCommentsButton = '';
+  	}
+
 		return (
 			<div className="commentBox">
         <h3>Kommentit</h3>
         {loadingIcon}
 				{commentNodes}
-				<a href='' onClick={this.loadMoreComments}>Näytä lisää kommentteja</a>
+				{showMoreCommentsButton}
         <CommentForm postNewComment={this.postNewComment}/>
       </div>
 		);
@@ -109,7 +117,10 @@ var CommentForm = React.createClass({
 
 		return (
 			<div>
-				<a href="" onClick={this.openNewCommentForm}>Kirjoita uusi kommentti</a>
+				<a href="" style={openCommentFormStyle} onClick={this.openNewCommentForm}>
+					<i className="glyphicon glyphicon-comment"></i>&nbsp;
+					Kommentoi
+				</a>
 				<form className="commentForm" onSubmit={this.handleSubmit} style={displayForm}>
 					<input className="form-control" type="text" placeholder="Nimi" required ref="author" maxLength="50" />
 					<textarea className="form-control" placeholder="Kommentti" required ref="comment" maxLength="1000" ></textarea>
@@ -120,6 +131,11 @@ var CommentForm = React.createClass({
 	}
 
 });
+
+var openCommentFormStyle = {
+	marginTop: "5px",
+	display: "block"
+}
 
 
 var Comment = React.createClass({
