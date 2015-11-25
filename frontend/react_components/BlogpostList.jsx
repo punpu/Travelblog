@@ -5,7 +5,7 @@ var LoginStore = require('../flux/login/LoginStore');
 var BlogpostActions = require('../flux/blogpost/BlogpostActions');
 var BlogpostStore = require('../flux/blogpost/BlogpostStore');
 
-
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var BlogpostList = React.createClass({
 
@@ -76,7 +76,9 @@ var BlogpostList = React.createClass({
 
 		return (
 			<div className="blogpostList">
-				{blogpostNodes}
+				<ReactCSSTransitionGroup transitionName="blogpost" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+					{blogpostNodes}
+				</ReactCSSTransitionGroup>
 				{loadMore}
 			</div>
 		);

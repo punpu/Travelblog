@@ -8,6 +8,7 @@
 	background-color #eeeeee
 	border-radius 10px
 	box-shadow 0px 0px 2px 2px grey
+	
 
 .blogpostList
 	width 95%
@@ -32,3 +33,14 @@
 	margin-bottom 10px
 	margin-top 10px
 	
+.blogpost-enter {
+  opacity 0.01
+  transform translate(0px, 80px)
+  
+}
+
+.blogpost-enter.blogpost-enter-active {
+  opacity 1
+  transition all 400ms ease-out
+  transform translate(0px, 0px)
+}
