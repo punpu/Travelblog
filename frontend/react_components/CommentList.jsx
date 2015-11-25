@@ -6,14 +6,22 @@ var CommentStore = require('../flux/comment/CommentStore');
 var CommentList = React.createClass({
 
 	getInitialState: function() {
-  	return {
-  		comments: []
-  	};
+		if(CommentStore.getCommentsByBlogpost(this.props.blogpostID)){
+			return CommentStore.getCommentsByBlogpost(this.props.blogpostID);
+		}
+		else{
+			return {
+				comments: []
+			};
+		}
   },
 
   componentDidMount: function() {
   	CommentStore.addChangeListener(this._onCommentStoreChange);
-  	CommentActions.loadComments(this.props.blogpostID, this.state.comments.length);
+
+  	if(this.state.comments.length === 0){
+	  	CommentActions.loadComments(this.props.blogpostID, this.state.comments.length);
+  	}
   },
 
   componentWillUnmount: function() {
@@ -48,9 +56,9 @@ var CommentList = React.createClass({
 
 
 	render: function() {
-		var commentNodes = this.state.comments.map( function (comment) {
+		var commentNodes = this.state.comments.map( function (comment, index) {
 			return (
-					<Comment key={comment.id} author={comment.author} text={comment.text} timestamp={comment.created_at} />
+					<Comment key={index} author={comment.author} text={comment.text} timestamp={comment.created_at} />
 				);
 		});
 

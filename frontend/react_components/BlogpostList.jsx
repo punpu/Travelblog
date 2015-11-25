@@ -13,14 +13,15 @@ var BlogpostList = React.createClass({
 	_HTMLElement: document.documentElement,
 
 	getInitialState: function() {
-  	return {
-  		blogposts: [],
-  	};
+  	return BlogpostStore.getBlogposts();
   },
 
   componentDidMount: function() {
   	BlogpostStore.addChangeListener(this._onBlogpostStoreChange);
-  	BlogpostActions.loadBlogposts(this.state.blogposts.length);
+
+  	if(this.state.blogposts.length === 0){
+	  	BlogpostActions.loadBlogposts(this.state.blogposts.length);
+  	}
 
   	window.addEventListener('scroll', this.handleScroll);
   },
@@ -32,13 +33,10 @@ var BlogpostList = React.createClass({
   },
 
   handleScroll: function (event) {
-  	// console.log('scrolltop: '+this._BodyElement.scrollTop);
-  	// console.log('scrollheight: '+ this._BodyElement.scrollHeight);
-  	// console.log('clientheight: '+ this._BodyElement.clientHeight);
-
-  	if(this._BodyElement.scrollHeight - this._BodyElement.scrollTop === this._BodyElement.clientHeight){
-  		console.log('lopussa');
-  	}
+  	// Load more blogposts when at bottom
+  	if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+       this.loadMoreBlogposts();
+    }
   },
 
   loadMoreBlogposts: function () {
@@ -52,9 +50,9 @@ var BlogpostList = React.createClass({
 
 
 	render: function() {
-		var blogpostNodes = this.state.blogposts.map( function (blogpost) {
+		var blogpostNodes = this.state.blogposts.map( function (blogpost, index) {
 			return (
-				<Blogpost key={blogpost.id} blogpostID={blogpost.id} author={blogpost.author} timestamp={blogpost.created_at}>
+				<Blogpost key={index} blogpostID={blogpost.id} author={blogpost.author} timestamp={blogpost.created_at}>
           {blogpost.text}
         </Blogpost>
 			);
@@ -160,7 +158,7 @@ var Blogpost = React.createClass({
 var loadMoreButtonCSS = {
 	display: "block",
 	width: "20em", 
-	marginBottom: "25px",
+	marginBottom: "50px",
 	marginLeft: "auto",
 	marginRight: "auto"};
 
