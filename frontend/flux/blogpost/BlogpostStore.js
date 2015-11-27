@@ -9,6 +9,7 @@ var CHANGE_EVENT = 'change';
 
 // This contains all the blogposts
 var _blogposts = {blogposts: [], loading: false, error: false};
+var _titles = {titles: [], loading: false, error: false};
 
 var BlogpostStore = assign({}, EventEmitter.prototype, {
 
@@ -22,6 +23,10 @@ var BlogpostStore = assign({}, EventEmitter.prototype, {
         return _blogposts.blogposts[i];
       }
     };
+  },
+
+  getBlogpostTitles: function () {
+    return _titles;
   },
 
 
@@ -131,6 +136,17 @@ BlogpostStore.dispatchToken = AppDispatcher.register(function(action) {
       _blogposts.error = true;
       BlogpostStore.emitChange();
       break;
+
+
+    case BlogpostConstants.TITLE_LOAD_FINISHED:
+      _titles.loading = false;
+      _titles.error = false;
+
+      _titles.titles = action.titles;
+
+      BlogpostStore.emitChange();
+      break;
+
   
     default:
       // no op

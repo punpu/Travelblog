@@ -78,9 +78,8 @@ var CommentList = React.createClass({
 		return (
 			<div className="commentBox">
         <h3>Kommentit</h3>
-        {loadingIcon}
 				{commentNodes}
-				{showMoreCommentsButton}
+				{showMoreCommentsButton}&nbsp;{loadingIcon}
         <CommentForm postNewComment={this.postNewComment}/>
       </div>
 		);

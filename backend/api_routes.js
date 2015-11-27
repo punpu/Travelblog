@@ -59,6 +59,23 @@ module.exports = function () {
 		});
 	});
 
+	// returns all blogposts titles
+	appRouter.get('/api/blogposts/titles', function  (req, res) {
+		console.log(Date()+' - GET: /api/blogposts/titles');
+
+		db
+		.select('id').table('blogpost')
+		.whereRaw('deleted IS FALSE')
+		.orderBy('created_at', 'desc')
+
+		.then(function(titles) {
+			res.status(200).send(titles);
+
+		}).catch(function (error) {
+			console.log(error);
+		});
+	});
+
 
 	// returns one blogpost
 	appRouter.get('/api/blogposts/:id', function  (req, res) {

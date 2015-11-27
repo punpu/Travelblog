@@ -37,6 +37,25 @@ var BlogpostList = React.createClass({
   	if ($(window).scrollTop() == $(document).height() - $(window).height()) {
        this.loadMoreBlogposts();
     }
+
+    // This is how to do it without jQuery, but this would need debouncing
+    // so the if condition is not fired too many times resulting in many blogposts being fetched
+
+		// var totalHeight, currentScroll, visibleHeight;
+
+		// if (document.documentElement.scrollTop){ 
+		// 	currentScroll = document.documentElement.scrollTop;
+		// }
+		// else{ 
+		// 	currentScroll = document.body.scrollTop; 
+		// }
+
+		// totalHeight = document.body.offsetHeight;
+		// visibleHeight = document.documentElement.clientHeight;
+
+		// if (totalHeight <= currentScroll + visibleHeight ){
+	 //    this.loadMoreBlogposts();
+	 //  }
   },
 
   loadMoreBlogposts: function () {

@@ -129,6 +129,28 @@ var BlogpostActions = {
     }); 
   },
 
+  // Loads Blogposts titles from server
+  loadBlogpostsTitles: function () {
+
+    $.ajax({
+    	url: page.base()+'/api/blogposts/titles', 
+    	dataType: 'json', 
+    	cache: false})
+    .done(function (data) {
+
+      AppDispatcher.dispatch({
+        actionType: BlogpostConstants.TITLE_LOAD_FINISHED,
+        titles: data
+      });
+    })
+
+    .fail(function (xhr, status, err) {
+      AppDispatcher.dispatch({
+        actionType: BlogpostConstants.TITLE_LOAD_ERROR,
+      });
+    });
+  },
+
 };
 
 module.exports = BlogpostActions;

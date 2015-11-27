@@ -2,6 +2,7 @@
 
 
 var BlogpostList = require('./BlogpostList.jsx');
+var SideNav = require('./SideNav.jsx');
 
 var BlogPage = React.createClass({
 
@@ -17,7 +18,10 @@ var BlogPage = React.createClass({
 
 	render: function() {
 		return (
-			<BlogpostList />
+			<div>
+				<BlogpostList />
+				<SideNav/>
+			</div>
 		);
 	}
 
