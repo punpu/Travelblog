@@ -10,6 +10,7 @@ db.raw(
 	'CREATE TABLE blogpost( '+
 		'id serial PRIMARY KEY, '+
 		'author varchar(30) NOT NULL, '+
+		'title text NOT NULL, '+
 		'text text NOT NULL, '+
 		'deleted boolean DEFAULT FALSE, '+
 		'created_at timestamptz DEFAULT current_timestamp, '+

@@ -30,7 +30,7 @@ var SideNav = React.createClass({
 		var titles = this.state.titles.map( function (title, index) {
 			return (
 				<li key={index} >
-          <a href={'#post'+title.id}>{'post '+title.id}</a>
+          <a href={'#post'+title.id}>{title.title}</a>
           
         </li>
 			);

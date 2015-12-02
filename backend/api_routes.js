@@ -10,7 +10,7 @@ module.exports = function () {
 	appRouter.post('/api/blogposts', auth.requireAuthentication, function(req, res){
 		console.log(Date()+' - POST: /api/blogposts');
 
-		if(!req.body.author || !req.body.text){
+		if(!req.body.author || !req.body.text || !req.body.title){
 			console.log(Date()+' - ERROR: malformed request');
 			res.status(400).send();
 			return;
@@ -18,9 +18,9 @@ module.exports = function () {
 		var date = new Date();
 
 		db.raw(
-			'insert into blogpost (author, text, created_at, updated_at) '+
-			'values (?, ?, ?, ?) '+
-			'returning *', [req.body.author, req.body.text, date.toISOString(), date.toISOString()]
+			'insert into blogpost (author, text, title, created_at, updated_at) '+
+			'values (?, ?, ?, ?, ?) '+
+			'returning *', [req.body.author, req.body.text, req.body.title, date.toISOString(), date.toISOString()]
 		)
 		.then(function(result){
 				console.log(Date()+' - New blogpost created');
@@ -64,7 +64,7 @@ module.exports = function () {
 		console.log(Date()+' - GET: /api/blogposts/titles');
 
 		db
-		.select('id').table('blogpost')
+		.select('id', 'title').table('blogpost')
 		.whereRaw('deleted IS FALSE')
 		.orderBy('created_at', 'desc')
 
@@ -98,7 +98,7 @@ module.exports = function () {
 	appRouter.put('/api/blogposts/:id', auth.requireAuthentication, function(req, res){
 		console.log(Date()+' - PUT: /api/blogposts/'+req.params.id);
 
-		if(!req.body.author || !req.body.text){
+		if(!req.body.author || !req.body.text || !req.body.title){
 			console.log(Date()+' - ERROR: malformed request');
 			res.status(400).send();
 			return;
@@ -106,9 +106,9 @@ module.exports = function () {
 
 		db.raw(
 			'UPDATE blogpost '+
-			'SET author = ?, text = ?, updated_at = current_timestamp '+
+			'SET author = ?, text = ?, title = ?, updated_at = current_timestamp '+
 			'WHERE id = ? '+
-			'returning *', [req.body.author, req.body.text, req.params.id])
+			'returning *', [req.body.author, req.body.text, req.body.title, req.params.id])
 		.then(function(result){
 				console.log(Date()+' - Blogpost edited');
 

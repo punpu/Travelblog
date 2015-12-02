@@ -18,19 +18,20 @@ var BlogpostCreationPage = React.createClass({
 	getInitialState: function() {
 		return {
 			preview: "",
-			blogpost: {author: "", text: ""}
+			blogpost: {author: "", text: "", title: ""}
 		};
 	},
 
 	postNewBlogpost: function () {
 		var author = React.findDOMNode(this.refs.author).value.trim();
     var blogpostText = React.findDOMNode(this.refs.blogpostText).value.trim();
+    var title = React.findDOMNode(this.refs.title).value.trim();
 
-    if(!author || !blogpostText){
+    if(!author || !blogpostText || !title){
     	return;
     }
 
-    var blogpost = {author: author, text: blogpostText};
+    var blogpost = {author: author, title: title, text: blogpostText};
 
     BlogpostActions.createBlogpost(blogpost, function () {
     	// Redirect when successful
@@ -41,12 +42,13 @@ var BlogpostCreationPage = React.createClass({
 	editBlogpost: function () {
 		var author = React.findDOMNode(this.refs.author).value.trim();
     var blogpostText = React.findDOMNode(this.refs.blogpostText).value.trim();
+    var title = React.findDOMNode(this.refs.title).value.trim();
 
-    if(!author || !blogpostText){
+    if(!author || !blogpostText || !title){
     	return;
     }
 
-    var blogpost = {author: author, text: blogpostText, id: this.props.blogpostid};
+    var blogpost = {author: author, text: blogpostText, title: title, id: this.props.blogpostid};
 
     BlogpostActions.editBlogpost(blogpost, function () {
     	// Redirect if successful
@@ -77,8 +79,9 @@ var BlogpostCreationPage = React.createClass({
 	updateForm: function () {
 		var blogpostText = React.findDOMNode(this.refs.blogpostText).value;
 		var blogpostAuthor = React.findDOMNode(this.refs.author).value;
+		var blogpostTitle = React.findDOMNode(this.refs.title).value;
 		
-		this.setState( {blogpost: {author: blogpostAuthor, text: blogpostText}});
+		this.setState( {blogpost: {author: blogpostAuthor, title: blogpostTitle, text: blogpostText}});
 		this.setState( {preview: marked(blogpostText)});
 
 	},
@@ -93,6 +96,11 @@ var BlogpostCreationPage = React.createClass({
 						<input className="form-control" placeholder="Kirjoittaja" type="text" ref="author" 
 									 style={style.input} onChange={this.updateForm} value={this.state.blogpost.author}>
 						</input>
+
+						<input className="form-control" placeholder="Otsikko" type="text" ref="title" 
+									 style={style.input} onChange={this.updateForm} value={this.state.blogpost.title}>
+						</input>
+
 						<textarea className="form-control" rows="20" placeholder="Teksti" ref="blogpostText"
 										  onChange={this.updateForm} value={this.state.blogpost.text}></textarea>
 
