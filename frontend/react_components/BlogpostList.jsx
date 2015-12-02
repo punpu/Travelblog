@@ -150,7 +150,7 @@ var Blogpost = React.createClass({
 									 ('0' + date.getSeconds()).slice(-2);
 
 		return (
-			<div className="blogpost">
+			<div className="blogpost" id={'post'+this.props.blogpostID}>
 				<div className="blogpostHeader">
 					<span className="blogpostAuthor">
 						Kirjoittanut: {this.props.author}

@@ -30,17 +30,18 @@ var SideNav = React.createClass({
 		var titles = this.state.titles.map( function (title, index) {
 			return (
 				<li key={index} >
-          {title.id}
+          <a href={'#post'+title.id}>{'post '+title.id}</a>
+          
         </li>
 			);
 		});
 
 		return (
-			<div className="well" style={navBarStyle}>
+			<nav className="navbar well sideNav" style={navBarStyle}>
 				<ul className="nav nav-pills nav-stacked">
 				  {titles}
 				</ul>
-			</div>
+			</nav>
 		);
 	}
 
@@ -48,9 +49,14 @@ var SideNav = React.createClass({
 
 var navBarStyle = {
 	position: "fixed",
-	top: "30%",
+	top: "10%",
 	right: "1%",
-	width: "200px"
+	width: "15%",
+	border: "1px solid",
+	padding: "1%",
+	backgroundColor: "#eeeeee",
+	borderRadius: "10px",
+	boxShadow: "0px 0px 2px 2px grey"
 };
 
 
